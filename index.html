@@ -165,35 +165,25 @@
         radial-gradient(circle, transparent 52%, rgba(0, 0, 0, 0.32) 100%);
     }
 
-    .wheel::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 4;
-      border-radius: 50%;
-      pointer-events: none;
-      background: repeating-conic-gradient(
-        from 0deg,
-        rgba(255, 255, 255, 0.22) 0deg 0.8deg,
-        transparent 0.8deg var(--segment-angle)
-      );
-      opacity: 0.72;
-    }
-
     .wheel-label {
       position: absolute;
       left: 50%;
       top: 50%;
-      z-index: 2;
-      width: 30%;
+      z-index: 5;
+      width: clamp(29%, 96px, 36%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transform-origin: center center;
       text-align: center;
       color: #f6ecd5;
       font-weight: 850;
-      font-size: clamp(0.68rem, 1.7vw, 1rem);
-      line-height: 1.05;
+      font-size: clamp(0.58rem, 1.35vw, 0.9rem);
+      line-height: 1.06;
+      letter-spacing: 0.01em;
       text-shadow: 0 2px 3px rgba(0, 0, 0, 0.72), 0 0 8px rgba(0, 0, 0, 0.22);
       pointer-events: none;
+      padding: 0 8px;
     }
 
     .wheel-label span {
