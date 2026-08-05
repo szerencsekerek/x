@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b12">
+  <title>Szerencsekerék – Pörgető</title>
+
+  <style>
+    :root {
+      --wheel-size: min(68vw, 590px);
+      /* Luxury VIP palette: deep onyx, rich gold, dark ruby and creamy ivory */
+      --bg: #050302;
+      --panel: rgba(18, 12, 10, 0.66);
+      --panel-strong: rgba(14, 9, 7, 0.88);
+      --border: rgba(212, 175, 55, 0.24);
+      --text: #f4ebd8;
+      --muted: rgba(244, 235, 216, 0.62);
+      --gold: #d4af37;
+      --gold-soft: rgba(212, 175, 55, 0.14);
+      --maroon: #4b1114;
+      --accent-deep: #7f141b;
+      --accent-light: #f5d77a;
+      --radius: 18px;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-strong: rgba(255, 255, 255, 0.08);
+      --transition-slow: 420ms cubic-bezier(.2,.9,.2,1);
+    }
+
+    * { box-sizing: border-box; }
+    html { color-scheme: dark; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 28px;
+      overflow-x: hidden;
+      display: grid;
+      place-items: center;
+      font-family: "Georgia", "Times New Roman", serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 12%, rgba(212, 175, 55, 0.13), transparent 9%),
+        radial-gradient(circle at 82% 18%, rgba(143, 29, 33, 0.12), transparent 14%),
+        linear-gradient(180deg, var(--bg), #070404 58%);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+
+    .app {
+      width: min(1180px, 100%);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 26px;
+      padding: 30px;
+      border-radius: calc(var(--radius) + 6px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), var(--panel));
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 5px 22px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(212,175,55,0.06);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px) saturate(1.05);
+    }
+
+    .game-panel,
+    .side-panel {
+      min-width: 0;
+    }
+
+    .header {
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 1;
+      letter-spacing: -0.055em;
+      background: linear-gradient(90deg, #fff7df, #f5d77a 45%, #d4af37);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: clamp(0.92rem, 2vw, 1rem);
+    }
+
+    .wheel-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .wheel-stage {
+      position: relative;
+      width: var(--wheel-size);
+      height: var(--wheel-size);
+      max-width: 100%;
+      isolation: isolate;
+    }
+
+    .wheel-stage::before {
+      content: "";
+      position: absolute;
+      inset: 9%;
+      z-index: -1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 38% 32%, rgba(212,175,55,0.22), transparent 18%),
+        radial-gradient(circle at 62% 22%, rgba(143, 24, 29, 0.18), transparent 16%);
+      filter: blur(52px);
+      opacity: 0.54;
+    }
+
+    .wheel-shell {
+      position: absolute;
+      inset: 0;
+      padding: clamp(9px, 1.7vw, 15px);
+      border-radius: 50%;
+      background:
+        linear-gradient(145deg, #110b0a, #2c1614 22%, #0c0706 48%, #3f1814 75%, #120a08);
+      box-shadow:
+        0 32px 78px rgba(0, 0, 0, 0.72),
+        0 0 0 4px rgba(212,175,55,0.18),
+        inset 0 0 48px rgba(212,175,55,0.08);
+      border: 1px solid rgba(212,175,55,0.16);
+    }
+
+    .wheel-shell::before {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+    }
+
+    .wheel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 50%;
+      background: #080503;
+      box-shadow:
+        inset 0 0 0 3px rgba(255, 255, 255, 0.12),
+        inset 0 0 46px rgba(0, 0, 0, 0.58);
+      will-change: transform;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+    }
+
+    .wheel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      border-radius: 50%;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 28% 18%, rgba(255, 255, 255, 0.18), transparent 15%),
+        radial-gradient(circle, transparent 52%, rgba(0, 0, 0, 0.32) 100%);
+    }
+
+    .wheel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      border-radius: 50%;
+      pointer-events: none;
+      background: repeating-conic-gradient(
+        from 0deg,
+        rgba(255, 255, 255, 0.22) 0deg 0.8deg,
+        transparent 0.8deg var(--segment-angle)
+      );
+      opacity: 0.72;
+    }
+
+    .wheel-label {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 2;
+      width: 30%;
+      transform-origin: center center;
+      text-align: center;
+      color: #f6ecd5;
+      font-weight: 850;
+      font-size: clamp(0.68rem, 1.7vw, 1rem);
+      line-height: 1.05;
+      text-shadow:
+        0 2px 3px rgba(0, 0, 0, 0.72),
+        0 0 8px rgba(0, 0, 0, 0.22);
+      pointer-events: none;
+    }
+
+    .wheel-label span {
+      display: block;
+      transform: rotate(90deg);
+      white-space: normal;
+    }
+
+    .hub {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 8;
+      width: 25%;
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      border: clamp(5px, 1vw, 9px) solid rgba(212,175,55,0.75);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 28%, #fff9e2, #d4af37 28%, #241511 70%, #0e0806);
+      box-shadow:
+        0 14px 32px rgba(0, 0, 0, 0.68),
+        0 0 0 8px rgba(0, 0, 0, 0.18),
+        inset 0 1px 5px rgba(255, 255, 255, 0.22);
+      pointer-events: none;
+    }
+
+    .hub::after {
+      content: "SPIN";
+      font-size: clamp(0.7rem, 2vw, 1rem);
+      font-weight: 950;
+      letter-spacing: 0.08em;
+      color: #2a180f;
+      text-shadow: 0 1px 0 #f8e7c6;
+    }
+
+    .pointer {
+      position: absolute;
+      left: 50%;
+      top: -7px;
+      z-index: 12;
+      width: clamp(36px, 7vw, 54px);
+      height: clamp(57px, 11vw, 78px);
+      transform: translateX(-50%);
+      pointer-events: none;
+      filter: drop-shadow(0 9px 8px rgba(0, 0, 0, 0.45));
+    }
+
+    .pointer::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      clip-path: polygon(50% 100%, 0 24%, 14% 4%, 86% 4%, 100% 24%);
+      background: linear-gradient(145deg, #f2e6c7, #c99c3e 48%, #5d311f);
+    }
+
+    .pointer::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 8px;
+      width: 42%;
+      aspect-ratio: 1;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: #7c4f23;
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.22);
+    }
+
+    .controls {
+      width: min(560px, 100%);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+    }
+
+    .player-input {
+      width: 100%;
+      min-width: 0;
+      padding: 13px 14px;
+      color: var(--text);
+      border: 1px solid rgba(212,175,55,0.22);
+      border-radius: 13px;
+      outline: none;
+      background: rgba(255, 255, 255, 0.06);
+      transition: 160ms ease;
+    }
+
+    .player-input:focus {
+      border-color: rgba(212,175,55,0.45);
+      box-shadow: 0 0 0 4px rgba(212,175,55,0.12);
+    }
+
+    .spin-btn {
+      min-width: 170px;
+      padding: 13px 24px;
+      border: 1px solid rgba(212,175,55,0.4);
+      border-radius: 13px;
+      color: #19120b;
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      background: linear-gradient(135deg, #f5d77a, #d4af37 40%, #ab8a2e);
+      box-shadow:
+        0 18px 40px rgba(212,175,55,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.22);
+      transition: transform 160ms ease, filter 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    .spin-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+      box-shadow: 0 22px 44px rgba(212,175,55,0.24);
+      background: linear-gradient(135deg, #fff3bf, #d4af37 55%, #9a7a24);
+    }
+
+    .spin-btn:active {
+      transform: translateY(1px) scale(0.985);
+    }
+
+    .spin-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      filter: grayscale(0.35);
+      box-shadow: none;
+    }
+
+    .result {
+      width: min(560px, 100%);
+      min-height: 64px;
+      padding: 14px 18px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border: 1px solid rgba(212,175,55,0.18);
+      border-radius: 14px;
+      color: #f7eed9;
+      background: rgba(212,175,55,0.08);
+    }
+
+    .result strong {
+      color: #fff9e7;
+      font-size: 1.1rem;
+    }
+
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .log {
+      min-height: 440px;
+      max-height: 560px;
+      overflow: auto;
+      padding: 16px;
+      border: 1px solid rgba(212,175,55,0.18);
+      border-radius: 18px;
+      background:
+        linear-gradient(150deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)),
+        rgba(10, 8, 8, 0.84);
+      backdrop-filter: blur(16px);
+    }
+
+    .log::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .log::-webkit-scrollbar-thumb {
+      border-radius: 99px;
+      background: rgba(212,175,55,0.24);
+    }
+
+    .log-header {
+      position: sticky;
+      top: -16px;
+      z-index: 3;
+      margin: -16px -16px 14px;
+      padding: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: rgba(12, 9, 8, 0.96);
+      backdrop-filter: blur(14px);
+    }
+
+    .log-header h2 {
+      margin: 0;
+      font-size: 1.08rem;
+      color: #f8edd8;
+    }
+
+    .log-header p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .entry {
+      position: relative;
+      margin-bottom: 9px;
+      padding: 12px 12px 12px 16px;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .entry::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 11px;
+      bottom: 11px;
+      width: 3px;
+      border-radius: 0 3px 3px 0;
+      background: linear-gradient(180deg, #f5d77a, #7f141b);
+      box-shadow: 0 0 8px rgba(212,175,55,0.24);
+    }
+
+    .entry-result {
+      display: block;
+      color: #fbf1da;
+      font-size: 0.92rem;
+      font-weight: 750;
+    }
+
+    .entry-meta {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .empty {
+      padding: 30px 10px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .side-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .secondary-btn {
+      padding: 11px 12px;
+      border: 1px solid rgba(212,175,55,0.22);
+      border-radius: 12px;
+      color: #f7edd8;
+      font-weight: 750;
+      cursor: pointer;
+      background: rgba(255,255,255,0.05);
+      transition: 160ms ease, transform 160ms ease, background 160ms ease;
+    }
+
+    .secondary-btn:hover {
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-1px);
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 0.75rem;
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    .confetti {
+      position: fixed;
+      left: 50%;
+      top: 42%;
+      z-index: 100;
+      width: 9px;
+      height: 15px;
+      border-radius: 2px;
+      pointer-events: none;
+      animation: confetti-fall 1150ms ease-out forwards;
+    }
+
+    @keyframes confetti-fall {
+      from {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      to {
+        opacity: 0;
+        transform:
+          translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
+          rotate(var(--r));
+      }
+    }
+
+    @media (max-width: 950px) {
+      :root {
+        --wheel-size: min(88vw, 600px);
+      }
+
+      body {
+        align-items: start;
+      }
+
+      .app {
+        width: min(680px, 100%);
+        grid-template-columns: 1fr;
+      }
+
+      .log {
+        min-height: 0;
+        max-height: 380px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      :root {
+        --wheel-size: min(91vw, 430px);
+      }
+
+      body {
+        padding: 10px;
+      }
+
+      .app {
+        padding: 16px 12px;
+        gap: 20px;
+        border-radius: 18px;
+      }
+
+      .header {
+        margin-bottom: 10px;
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .spin-btn {
+        width: 100%;
+        min-height: 50px;
+      }
+
+      .wheel-label {
+        width: 34%;
+        font-size: clamp(0.56rem, 2.7vw, 0.78rem);
+      }
+
+      .pointer {
+        top: -5px;
+      }
+
+      .side-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <section class="game-panel">
+      <header class="header">
+        <h1>Szerencsekerék</h1>
+        <p class="subtitle">Vajon milyen ajándékot tartogatok számodra?</p>
+      </header>
+
+      <div class="wheel-area">
+        <div class="wheel-stage">
+          <div class="pointer" aria-hidden="true"></div>
+
+          <div class="wheel-shell">
+            <div
+              id="wheel"
+              class="wheel"
+              role="button"
+              tabindex="0"
+              aria-label="Szerencsekerék pörgetése"
+            ></div>
+          </div>
+
+          <div class="hub" aria-hidden="true"></div>
+        </div>
+
+        <div class="controls">
+          <input
+            id="playerName"
+            class="player-input"
+            type="text"
+            maxlength="30"
+            autocomplete="name"
+            placeholder="Nicknév (opcionális)"
+          >
+          <button id="spin" class="spin-btn" type="button">PÖRGETÉS</button>
+        </div>
+
+        <div id="result" class="result" aria-live="polite">
+          Nyomd meg a pörgetés gombot.
+        </div>
+      </div>
+    </section>
+
+    <aside class="side-panel">
+      <section class="log">
+        <div class="log-header">
+          <h2>Elmentett pörgetések</h2>
+          <p>A legfrissebb eredmény jelenik meg felül.</p>
+        </div>
+        <div id="entries"></div>
+      </section>
+
+      <div class="side-actions">
+        <button id="clear" class="secondary-btn" type="button">Előzmények törlése</button>
+        <button id="export" class="secondary-btn" type="button">JSON exportálás</button>
+      </div>
+
+      <div class="footer">
+      </div>
+    </aside>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-analytics.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      deleteDoc,
+      doc
+    } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBtHbu1CywcEVSmx4ZiN1kZraotfGlmIq4",
+      authDomain: "szerencsekerek-5f52b.firebaseapp.com",
+      projectId: "szerencsekerek-5f52b",
+      storageBucket: "szerencsekerek-5f52b.firebasestorage.app",
+      messagingSenderId: "679689465068",
+      appId: "1:679689465068:web:25ddb5227e60ef38c809c9",
+      measurementId: "G-3V9VYSS6HZ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+    const entriesCollection = collection(db, "porgetesek");
+
+    const slices = [
+  "500 Ft",
+  "1000 Ft",
+  "2000 Ft",
+  "3000 Ft",
+  "5000 Ft",
+  "7000 Ft",
+  "10000 Ft",
+  "15000 Ft",
+  "20000 Ft"
+    ];
+
+    const weights = [
+  55,    // 500 Ft
+  25,    // 1000 Ft
+  12,    // 2000 Ft
+  4,     // 3000 Ft
+  2.5,   // 5000 Ft
+  0.35,  // 7000 Ft
+  0.1,   // 10000 Ft
+  0.04,  // 15000 Ft
+  0.01   // 20000 Ft
+    ];
+
+    const colors = [
+      "#d4af37",
+      "#c49c2f",
+      "#b38a28",
+      "#a67822",
+      "#95641d",
+      "#845618",
+      "#744a15",
+      "#653f12",
+      "#58350f"
+    ];
+
+    const wheel = document.getElementById("wheel");
+    const entriesEl = document.getElementById("entries");
+    const resultEl = document.getElementById("result");
+    const playerNameEl = document.getElementById("playerName");
+    const spinBtn = document.getElementById("spin");
+    const clearBtn = document.getElementById("clear");
+    const exportBtn = document.getElementById("export");
+
+    const segmentAngle = 360 / slices.length;
+    let currentRotation = 0;
+    let rotating = false;
+    let audioContext = null;
+
+    function buildWheel() {
+      wheel.style.setProperty("--segment-angle", `${segmentAngle}deg`);
+
+      const gradientStops = slices.map((_, index) => {
+        const start = index * segmentAngle;
+        const end = (index + 1) * segmentAngle;
+        return `${colors[index % colors.length]} ${start}deg ${end}deg`;
+      });
+
+      wheel.style.background =
+        `conic-gradient(from ${-segmentAngle / 2}deg, ${gradientStops.join(",")})`;
+
+      slices.forEach((text, index) => {
+        const label = document.createElement("div");
+        label.className = "wheel-label";
+
+        label.style.transform =
+          `translate(-50%, -50%) rotate(${index * segmentAngle}deg) ` +
+          `translateY(calc(var(--wheel-size) * -0.34))`;
+
+        const span = document.createElement("span");
+        span.textContent = text;
+        label.appendChild(span);
+        wheel.appendChild(label);
+      });
+    }
+
+    async function getEntries() {
+      try {
+        const snapshot = await getDocs(entriesCollection);
+        return snapshot.docs
+          .map((entryDoc) => ({ id: entryDoc.id, ...entryDoc.data() }))
+          .sort((a, b) => b.createdAt - a.createdAt);
+      } catch {
+        return [];
+      }
+    }
+
+    async function renderEntries() {
+      const entries = await getEntries();
+      entriesEl.replaceChildren();
+
+      if (!entries.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "Még nincs elmentett pörgetés.";
+        entriesEl.appendChild(empty);
+        return;
+      }
+
+      entries.forEach((entry) => {
+        const item = document.createElement("div");
+        item.className = "entry";
+
+        const result = document.createElement("span");
+        result.className = "entry-result";
+        result.textContent = entry.player
+          ? `${entry.player}: ${entry.result}`
+          : entry.result;
+
+        const meta = document.createElement("span");
+        meta.className = "entry-meta";
+        meta.textContent = entry.time;
+
+        item.append(result, meta);
+        entriesEl.appendChild(item);
+      });
+    }
+
+    function ensureAudio() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      if (audioContext.state === "suspended") {
+        audioContext.resume();
+      }
+    }
+
+    function playTone(frequency, duration, volume, type = "sine") {
+      if (!audioContext) return;
+
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      const now = audioContext.currentTime;
+
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, now);
+
+      gain.gain.setValueAtTime(volume, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+      oscillator.connect(gain);
+      gain.connect(audioContext.destination);
+
+      oscillator.start(now);
+      oscillator.stop(now + duration);
+    }
+
+    function playTick() {
+      playTone(950, 0.025, 0.035, "square");
+    }
+
+    function playWinSound() {
+      [523, 659, 784, 1047].forEach((frequency, index) => {
+        setTimeout(() => playTone(frequency, 0.22, 0.07, "sine"), index * 115);
+      });
+    }
+
+    function launchConfetti() {
+      const palette = ["#8b5cf6", "#f43f5e", "#22c55e", "#f59e0b", "#38bdf8", "#ffffff"];
+
+      for (let i = 0; i < 75; i++) {
+        const particle = document.createElement("div");
+        particle.className = "confetti";
+        particle.style.background = palette[i % palette.length];
+        particle.style.setProperty("--x", `${(Math.random() - 0.5) * 720}px`);
+        particle.style.setProperty("--y", `${90 + Math.random() * 480}px`);
+        particle.style.setProperty("--r", `${Math.random() * 900 - 450}deg`);
+        particle.style.animationDelay = `${Math.random() * 120}ms`;
+        document.body.appendChild(particle);
+
+        setTimeout(() => particle.remove(), 1450);
+      }
+    }
+
+    function easeOutQuint(value) {
+      return 1 - Math.pow(1 - value, 5);
+    }
+
+    function normalizeDegrees(value) {
+      return ((value % 360) + 360) % 360;
+    }
+
+    function selectWeightedWinner() {
+      const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+      let random = Math.random() * totalWeight;
+      
+      for (let i = 0; i < weights.length; i++) {
+        random -= weights[i];
+        if (random <= 0) return i;
+      }
+      
+      return slices.length - 1;
+    }
+
+    async function saveResult(result) {
+      const player = playerNameEl.value.trim();
+
+      await addDoc(entriesCollection, {
+        player,
+        result,
+        time: new Date().toLocaleString("hu-HU"),
+        createdAt: Date.now()
+      });
+
+      await renderEntries();
+    }
+
+    function spin() {
+      if (rotating) return;
+
+      ensureAudio();
+      rotating = true;
+      spinBtn.disabled = true;
+      resultEl.textContent = "Pörög a kerék…";
+
+      const winnerIndex = selectWeightedWinner();
+      const rounds = 6 + Math.floor(Math.random() * 3);
+
+      const currentNormalized = normalizeDegrees(currentRotation);
+      const desiredNormalized = normalizeDegrees(-winnerIndex * segmentAngle);
+      const alignmentDelta =
+        normalizeDegrees(desiredNormalized - currentNormalized);
+
+      const startRotation = currentRotation;
+      const targetRotation =
+        currentRotation + rounds * 360 + alignmentDelta;
+
+      const duration = 4700 + Math.random() * 700;
+      const startedAt = performance.now();
+      let lastTickSegment = null;
+
+      function animate(now) {
+        const progress = Math.min((now - startedAt) / duration, 1);
+        const eased = easeOutQuint(progress);
+        const rotation =
+          startRotation + (targetRotation - startRotation) * eased;
+
+        currentRotation = rotation;
+        wheel.style.transform = `rotate(${rotation}deg)`;
+
+        const tickSegment = Math.floor(
+          normalizeDegrees(rotation + segmentAngle / 2) / segmentAngle
+        );
+
+        if (tickSegment !== lastTickSegment) {
+          playTick();
+          lastTickSegment = tickSegment;
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+          return;
+        }
+
+        currentRotation = targetRotation;
+        wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+        const result = slices[winnerIndex];
+        resultEl.innerHTML = `Az eredmény: <strong>${result}</strong>`;
+
+        saveResult(result).catch(() => {});
+        playWinSound();
+        launchConfetti();
+
+        rotating = false;
+        spinBtn.disabled = false;
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    spinBtn.addEventListener("click", spin);
+    wheel.addEventListener("click", spin);
+
+    wheel.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        spin();
+      }
+    });
+
+    clearBtn.addEventListener("click", async () => {
+      if (!confirm("Biztosan törlöd az összes pörgetést?")) return;
+
+      const entries = await getEntries();
+      await Promise.all(
+        entries.map((entry) => deleteDoc(doc(db, "porgetesek", entry.id)))
+      );
+
+      await renderEntries();
+      resultEl.textContent = "Az előzmények törölve.";
+    });
+
+    exportBtn.addEventListener("click", async () => {
+      const data = await getEntries();
+      const blob = new Blob([JSON.stringify(data, null, 2)], {
+        type: "application/json"
+      });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "szerencsekerek-pörgetések.json";
+      link.click();
+
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+
+    function init() {
+      buildWheel();
+      renderEntries();
+    }
+
+    init();
+  </script>
+</body>
+</html>
