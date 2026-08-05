@@ -81,8 +81,9 @@
 
     .wheel-stage {
       position: relative;
-      width: var(--wheel-size);
-      height: var(--wheel-size);
+      width: min(100%, var(--wheel-size));
+      aspect-ratio: 1 / 1;
+      height: auto;
       max-width: 100%;
       isolation: isolate;
     }
@@ -163,6 +164,17 @@
       background:
         radial-gradient(circle at 28% 18%, rgba(255, 255, 255, 0.18), transparent 15%),
         radial-gradient(circle, transparent 52%, rgba(0, 0, 0, 0.32) 100%);
+    }
+
+    .wheel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      border-radius: 50%;
+      pointer-events: none;
+      background: var(--slice-outline);
+      opacity: 0.95;
     }
 
     .wheel-label {
