@@ -9,22 +9,12 @@
   <style>
     :root {
       --wheel-size: min(68vw, 590px);
-      /* Luxury VIP palette: deep onyx, rich gold, dark ruby and creamy ivory */
       --bg: #050302;
       --panel: rgba(18, 12, 10, 0.66);
-      --panel-strong: rgba(14, 9, 7, 0.88);
       --border: rgba(212, 175, 55, 0.24);
       --text: #f4ebd8;
       --muted: rgba(244, 235, 216, 0.62);
-      --gold: #d4af37;
-      --gold-soft: rgba(212, 175, 55, 0.14);
-      --maroon: #4b1114;
-      --accent-deep: #7f141b;
-      --accent-light: #f5d77a;
       --radius: 18px;
-      --glass: rgba(255, 255, 255, 0.05);
-      --glass-strong: rgba(255, 255, 255, 0.08);
-      --transition-slow: 420ms cubic-bezier(.2,.9,.2,1);
     }
 
     * { box-sizing: border-box; }
@@ -62,15 +52,8 @@
       backdrop-filter: blur(10px) saturate(1.05);
     }
 
-    .game-panel,
-    .side-panel {
-      min-width: 0;
-    }
-
-    .header {
-      margin-bottom: 18px;
-      text-align: center;
-    }
+    .game-panel, .side-panel { min-width: 0; }
+    .header { margin-bottom: 18px; text-align: center; }
 
     h1 {
       margin: 0;
@@ -131,8 +114,7 @@
       inset: 0;
       padding: clamp(9px, 1.7vw, 15px);
       border-radius: 50%;
-      background:
-        linear-gradient(145deg, #110b0a, #2c1614 22%, #0c0706 48%, #3f1814 75%, #120a08);
+      background: linear-gradient(145deg, #110b0a, #2c1614 22%, #0c0706 48%, #3f1814 75%, #120a08);
       box-shadow:
         0 32px 78px rgba(0, 0, 0, 0.72),
         0 0 0 4px rgba(212,175,55,0.18),
@@ -164,9 +146,7 @@
       overflow: hidden;
       border-radius: 50%;
       background: #080503;
-      box-shadow:
-        inset 0 0 0 3px rgba(255, 255, 255, 0.12),
-        inset 0 0 46px rgba(0, 0, 0, 0.58);
+      box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.12), inset 0 0 46px rgba(0, 0, 0, 0.58);
       will-change: transform;
       cursor: pointer;
       user-select: none;
@@ -212,9 +192,7 @@
       font-weight: 850;
       font-size: clamp(0.68rem, 1.7vw, 1rem);
       line-height: 1.05;
-      text-shadow:
-        0 2px 3px rgba(0, 0, 0, 0.72),
-        0 0 8px rgba(0, 0, 0, 0.22);
+      text-shadow: 0 2px 3px rgba(0, 0, 0, 0.72), 0 0 8px rgba(0, 0, 0, 0.22);
       pointer-events: none;
     }
 
@@ -236,12 +214,8 @@
       place-items: center;
       border: clamp(5px, 1vw, 9px) solid rgba(212,175,55,0.75);
       border-radius: 50%;
-      background:
-        radial-gradient(circle at 35% 28%, #fff9e2, #d4af37 28%, #241511 70%, #0e0806);
-      box-shadow:
-        0 14px 32px rgba(0, 0, 0, 0.68),
-        0 0 0 8px rgba(0, 0, 0, 0.18),
-        inset 0 1px 5px rgba(255, 255, 255, 0.22);
+      background: radial-gradient(circle at 35% 28%, #fff9e2, #d4af37 28%, #241511 70%, #0e0806);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.68), 0 0 0 8px rgba(0, 0, 0, 0.18), inset 0 1px 5px rgba(255, 255, 255, 0.22);
       pointer-events: none;
     }
 
@@ -326,22 +300,18 @@
       letter-spacing: 0.03em;
       cursor: pointer;
       background: linear-gradient(135deg, #f5d77a, #d4af37 40%, #ab8a2e);
-      box-shadow:
-        0 18px 40px rgba(212,175,55,0.18),
-        inset 0 1px 0 rgba(255,255,255,0.22);
+      box-shadow: 0 18px 40px rgba(212,175,55,0.18), inset 0 1px 0 rgba(255,255,255,0.22);
       transition: transform 160ms ease, filter 160ms ease, box-shadow 160ms ease, background 160ms ease;
     }
 
-    .spin-btn:hover {
+    .spin-btn:hover:not(:disabled) {
       transform: translateY(-2px);
       filter: brightness(1.05);
       box-shadow: 0 22px 44px rgba(212,175,55,0.24);
       background: linear-gradient(135deg, #fff3bf, #d4af37 55%, #9a7a24);
     }
 
-    .spin-btn:active {
-      transform: translateY(1px) scale(0.985);
-    }
+    .spin-btn:active:not(:disabled) { transform: translateY(1px) scale(0.985); }
 
     .spin-btn:disabled {
       opacity: 0.55;
@@ -365,12 +335,8 @@
       transition: all 400ms ease;
     }
 
-    .result strong {
-      color: #fff9e7;
-      font-size: 1.15rem;
-    }
+    .result strong { color: #fff9e7; font-size: 1.15rem; }
 
-    /* VIP Win Result Glow & Pulse Animation */
     .result.win-active {
       border-color: rgba(212, 175, 55, 0.7);
       background: linear-gradient(135deg, rgba(212,175,55,0.22), rgba(75,17,20,0.45));
@@ -389,19 +355,11 @@
     }
 
     @keyframes luxury-pulse {
-      0% {
-        box-shadow: 0 0 15px rgba(212, 175, 55, 0.25), inset 0 0 10px rgba(212, 175, 55, 0.1);
-      }
-      100% {
-        box-shadow: 0 0 35px rgba(212, 175, 55, 0.55), inset 0 0 20px rgba(245, 215, 122, 0.25);
-      }
+      0% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.25), inset 0 0 10px rgba(212, 175, 55, 0.1); }
+      100% { box-shadow: 0 0 35px rgba(212, 175, 55, 0.55), inset 0 0 20px rgba(245, 215, 122, 0.25); }
     }
 
-    .side-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+    .side-panel { display: flex; flex-direction: column; gap: 12px; }
 
     .log {
       min-height: 440px;
@@ -410,20 +368,12 @@
       padding: 16px;
       border: 1px solid rgba(212,175,55,0.18);
       border-radius: 18px;
-      background:
-        linear-gradient(150deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)),
-        rgba(10, 8, 8, 0.84);
+      background: linear-gradient(150deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)), rgba(10, 8, 8, 0.84);
       backdrop-filter: blur(16px);
     }
 
-    .log::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .log::-webkit-scrollbar-thumb {
-      border-radius: 99px;
-      background: rgba(212,175,55,0.24);
-    }
+    .log::-webkit-scrollbar { width: 8px; }
+    .log::-webkit-scrollbar-thumb { border-radius: 99px; background: rgba(212,175,55,0.24); }
 
     .log-header {
       position: sticky;
@@ -436,17 +386,8 @@
       backdrop-filter: blur(14px);
     }
 
-    .log-header h2 {
-      margin: 0;
-      font-size: 1.08rem;
-      color: #f8edd8;
-    }
-
-    .log-header p {
-      margin: 5px 0 0;
-      color: var(--muted);
-      font-size: 0.8rem;
-    }
+    .log-header h2 { margin: 0; font-size: 1.08rem; color: #f8edd8; }
+    .log-header p { margin: 5px 0 0; color: var(--muted); font-size: 0.8rem; }
 
     .entry {
       position: relative;
@@ -460,41 +401,18 @@
     .entry::before {
       content: "";
       position: absolute;
-      left: 0;
-      top: 11px;
-      bottom: 11px;
+      left: 0; top: 11px; bottom: 11px;
       width: 3px;
       border-radius: 0 3px 3px 0;
       background: linear-gradient(180deg, #f5d77a, #7f141b);
       box-shadow: 0 0 8px rgba(212,175,55,0.24);
     }
 
-    .entry-result {
-      display: block;
-      color: #fbf1da;
-      font-size: 0.92rem;
-      font-weight: 750;
-    }
+    .entry-result { display: block; color: #fbf1da; font-size: 0.92rem; font-weight: 750; }
+    .entry-meta { display: block; margin-top: 4px; color: var(--muted); font-size: 0.75rem; }
+    .empty { padding: 30px 10px; color: var(--muted); text-align: center; font-size: 0.9rem; }
 
-    .entry-meta {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 0.75rem;
-    }
-
-    .empty {
-      padding: 30px 10px;
-      color: var(--muted);
-      text-align: center;
-      font-size: 0.9rem;
-    }
-
-    .side-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 9px;
-    }
+    .side-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
 
     .secondary-btn {
       padding: 11px 12px;
@@ -507,23 +425,12 @@
       transition: 160ms ease, transform 160ms ease, background 160ms ease;
     }
 
-    .secondary-btn:hover {
-      background: rgba(255,255,255,0.12);
-      transform: translateY(-1px);
-    }
+    .secondary-btn:hover:not(:disabled) { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+    .secondary-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    .footer {
-      color: var(--muted);
-      font-size: 0.75rem;
-      line-height: 1.45;
-      text-align: center;
-    }
-
-    /* VIP Gold & Ruby Particle Animations */
     .confetti {
       position: fixed;
-      left: 50%;
-      top: 45%;
+      left: 50%; top: 45%;
       z-index: 100;
       pointer-events: none;
       will-change: transform, opacity;
@@ -537,8 +444,8 @@
       background: linear-gradient(135deg, #fff7df, #d4af37 40%, #7f141b 85%, #f5d77a);
       background-size: 200% 200%;
       box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
-      animation: 
-        vip-particle-burst var(--duration, 2200ms) cubic-bezier(0.12, 0.78, 0.32, 1) forwards, 
+      animation:
+        vip-particle-burst var(--duration, 2200ms) cubic-bezier(0.12, 0.78, 0.32, 1) forwards,
         foil-shimmer 700ms linear infinite alternate;
     }
 
@@ -559,18 +466,9 @@
     }
 
     @keyframes vip-particle-burst {
-      0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) translate(0, 0) scale(0.2) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-      }
-      15% {
-        opacity: 1;
-        transform: translate(-50%, -50%) translate(calc(var(--x) * 0.35), calc(var(--y) * 0.35)) scale(1.25) rotateX(120deg) rotateY(180deg) rotateZ(90deg);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) translate(var(--x), var(--y)) scale(0.35) rotateX(720deg) rotateY(900deg) rotateZ(450deg);
-      }
+      0% { opacity: 0; transform: translate(-50%, -50%) translate(0, 0) scale(0.2) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+      15% { opacity: 1; transform: translate(-50%, -50%) translate(calc(var(--x) * 0.35), calc(var(--y) * 0.35)) scale(1.25) rotateX(120deg) rotateY(180deg) rotateZ(90deg); }
+      100% { opacity: 0; transform: translate(-50%, -50%) translate(var(--x), var(--y)) scale(0.35) rotateX(720deg) rotateY(900deg) rotateZ(450deg); }
     }
 
     @keyframes foil-shimmer {
@@ -579,71 +477,26 @@
     }
 
     @media (max-width: 950px) {
-      :root {
-        --wheel-size: min(88vw, 600px);
-      }
-
-      body {
-        align-items: start;
-      }
-
-      .app {
-        width: min(680px, 100%);
-        grid-template-columns: 1fr;
-      }
-
-      .log {
-        min-height: 0;
-        max-height: 380px;
-      }
+      :root { --wheel-size: min(88vw, 600px); }
+      body { align-items: start; }
+      .app { width: min(680px, 100%); grid-template-columns: 1fr; }
+      .log { min-height: 0; max-height: 380px; }
     }
 
     @media (max-width: 560px) {
-      :root {
-        --wheel-size: min(91vw, 430px);
-      }
-
-      body {
-        padding: 10px;
-      }
-
-      .app {
-        padding: 16px 12px;
-        gap: 20px;
-        border-radius: 18px;
-      }
-
-      .header {
-        margin-bottom: 10px;
-      }
-
-      .controls {
-        grid-template-columns: 1fr;
-      }
-
-      .spin-btn {
-        width: 100%;
-        min-height: 50px;
-      }
-
-      .wheel-label {
-        width: 34%;
-        font-size: clamp(0.56rem, 2.7vw, 0.78rem);
-      }
-
-      .pointer {
-        top: -5px;
-      }
-
-      .side-actions {
-        grid-template-columns: 1fr;
-      }
+      :root { --wheel-size: min(91vw, 430px); }
+      body { padding: 10px; }
+      .app { padding: 16px 12px; gap: 20px; border-radius: 18px; }
+      .header { margin-bottom: 10px; }
+      .controls { grid-template-columns: 1fr; }
+      .spin-btn { width: 100%; min-height: 50px; }
+      .wheel-label { width: 34%; font-size: clamp(0.56rem, 2.7vw, 0.78rem); }
+      .pointer { top: -5px; }
+      .side-actions { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
+      *, *::before, *::after {
         scroll-behavior: auto !important;
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
@@ -658,41 +511,24 @@
     <section class="game-panel">
       <header class="header">
         <h1>Szerencsekerék</h1>
-        <p class="subtitle">Vajon milyen ajándékot tartogatok számodra?</p>
+        <p class="subtitle">Vajon milyen ajándékba ütközöl ma?</p>
       </header>
 
       <div class="wheel-area">
         <div id="wheelStage" class="wheel-stage">
           <div class="pointer" aria-hidden="true"></div>
-
           <div class="wheel-shell">
-            <div
-              id="wheel"
-              class="wheel"
-              role="button"
-              tabindex="0"
-              aria-label="Szerencsekerék pörgetése"
-            ></div>
+            <div id="wheel" class="wheel" role="button" tabindex="0" aria-label="Szerencsekerék pörgetése"></div>
           </div>
-
           <div class="hub" aria-hidden="true"></div>
         </div>
 
         <div class="controls">
-          <input
-            id="playerName"
-            class="player-input"
-            type="text"
-            maxlength="30"
-            autocomplete="name"
-            placeholder="Nicknév (opcionális)"
-          >
+          <input id="playerName" class="player-input" type="text" maxlength="30" autocomplete="name" placeholder="Nicknév (opcionális)">
           <button id="spin" class="spin-btn" type="button">PÖRGETÉS</button>
         </div>
 
-        <div id="result" class="result" aria-live="polite">
-          Nyomd meg a pörgetés gombot.
-        </div>
+        <div id="result" class="result" aria-live="polite">Nyomd meg a pörgetés gombot.</div>
       </div>
     </section>
 
@@ -700,7 +536,7 @@
       <section class="log">
         <div class="log-header">
           <h2>Elmentett pörgetések</h2>
-          <p>A legfrissebb eredmény jelenik meg felül.</p>
+          <p>A legfrissebb 20 eredmény jelenik meg.</p>
         </div>
         <div id="entries"></div>
       </section>
@@ -708,9 +544,6 @@
       <div class="side-actions">
         <button id="clear" class="secondary-btn" type="button">Előzmények törlése</button>
         <button id="export" class="secondary-btn" type="button">Exportálás</button>
-      </div>
-
-      <div class="footer">
       </div>
     </aside>
   </main>
@@ -724,7 +557,10 @@
       addDoc,
       getDocs,
       deleteDoc,
-      doc
+      doc,
+      query,
+      orderBy,
+      limit
     } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -738,26 +574,15 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
+    getAnalytics(app);
     const db = getFirestore(app);
     const entriesCollection = collection(db, "porgetesek");
 
-    const slices = [
-      "500 Ft",
-      "1000 Ft",
-      "2000 Ft",
-      "3000 Ft",
-      "5000 Ft",
-      "7000 Ft",
-      "10000 Ft",
-      "15000 Ft",
-      "20000 Ft"
-    ];
-
+    const slices = ["500 Ft", "1000 Ft", "2000 Ft", "3000 Ft", "5000 Ft", "7000 Ft", "10000 Ft", "15000 Ft", "20000 Ft"];
     const weights = [
-      55,    // 500 Ft
-      25,    // 1000 Ft
-      12,    // 2000 Ft
+      50,    // 500 Ft
+      27,    // 1000 Ft
+      15,    // 2000 Ft
       4,     // 3000 Ft
       2.5,   // 5000 Ft
       0.35,  // 7000 Ft
@@ -765,18 +590,7 @@
       0.04,  // 15000 Ft
       0.01   // 20000 Ft
     ];
-
-    const colors = [
-      "#d4af37",
-      "#c49c2f",
-      "#b38a28",
-      "#a67822",
-      "#95641d",
-      "#845618",
-      "#744a15",
-      "#653f12",
-      "#58350f"
-    ];
+    const colors = ["#d4af37", "#c49c2f", "#b38a28", "#a67822", "#95641d", "#845618", "#744a15", "#653f12", "#58350f"];
 
     const wheel = document.getElementById("wheel");
     const wheelStage = document.getElementById("wheelStage");
@@ -794,24 +608,19 @@
 
     function buildWheel() {
       wheel.style.setProperty("--segment-angle", `${segmentAngle}deg`);
-
-      const gradientStops = slices.map((_, index) => {
-        const start = index * segmentAngle;
-        const end = (index + 1) * segmentAngle;
-        return `${colors[index % colors.length]} ${start}deg ${end}deg`;
+      const gradientStops = slices.map((_, i) => {
+        const start = i * segmentAngle;
+        const end = (i + 1) * segmentAngle;
+        return `${colors[i % colors.length]} ${start}deg ${end}deg`;
       });
 
-      wheel.style.background =
-        `conic-gradient(from ${-segmentAngle / 2}deg, ${gradientStops.join(",")})`;
+      wheel.style.background = `conic-gradient(from ${-segmentAngle / 2}deg, ${gradientStops.join(",")})`;
 
       slices.forEach((text, index) => {
         const label = document.createElement("div");
         label.className = "wheel-label";
-
-        label.style.transform =
-          `translate(-50%, -50%) rotate(${index * segmentAngle}deg) ` +
-          `translateY(calc(var(--wheel-size) * -0.34))`;
-
+        label.style.transform = `translate(-50%, -50%) rotate(${index * segmentAngle}deg) translateY(calc(var(--wheel-size) * -0.34))`;
+        
         const span = document.createElement("span");
         span.textContent = text;
         label.appendChild(span);
@@ -821,18 +630,32 @@
 
     async function getEntries() {
       try {
-        const snapshot = await getDocs(entriesCollection);
-        return snapshot.docs
-          .map((entryDoc) => ({ id: entryDoc.id, ...entryDoc.data() }))
-          .sort((a, b) => b.createdAt - a.createdAt);
-      } catch {
-        return [];
+        const q = query(entriesCollection, orderBy("createdAt", "desc"), limit(20));
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+      } catch (err) {
+        console.error("Firebase lekérdezési hiba:", err);
+        return null;
       }
     }
 
     async function renderEntries() {
+      entriesEl.replaceChildren();
+      const loading = document.createElement("div");
+      loading.className = "empty";
+      loading.textContent = "Betöltés...";
+      entriesEl.appendChild(loading);
+
       const entries = await getEntries();
       entriesEl.replaceChildren();
+
+      if (entries === null) {
+        const errEl = document.createElement("div");
+        errEl.className = "empty";
+        errEl.textContent = "Hiba történt az előzmények betöltésekor.";
+        entriesEl.appendChild(errEl);
+        return;
+      }
 
       if (!entries.length) {
         const empty = document.createElement("div");
@@ -848,9 +671,7 @@
 
         const result = document.createElement("span");
         result.className = "entry-result";
-        result.textContent = entry.player
-          ? `${entry.player}: ${entry.result}`
-          : entry.result;
+        result.textContent = entry.player ? `${entry.player}: ${entry.result}` : entry.result;
 
         const meta = document.createElement("span");
         meta.className = "entry-meta";
@@ -865,7 +686,6 @@
       if (!audioContext) {
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
       }
-
       if (audioContext.state === "suspended") {
         audioContext.resume();
       }
@@ -873,37 +693,95 @@
 
     function playTone(frequency, duration, volume, type = "sine") {
       if (!audioContext) return;
+      try {
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        const now = audioContext.currentTime;
 
-      const oscillator = audioContext.createOscillator();
-      const gain = audioContext.createGain();
-      const now = audioContext.currentTime;
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, now);
 
-      oscillator.type = type;
-      oscillator.frequency.setValueAtTime(frequency, now);
+        gain.gain.setValueAtTime(volume, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
-      gain.gain.setValueAtTime(volume, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
 
-      oscillator.connect(gain);
-      gain.connect(audioContext.destination);
-
-      oscillator.start(now);
-      oscillator.stop(now + duration);
+        oscillator.start(now);
+        oscillator.stop(now + duration);
+      } catch {}
     }
 
     function playTick() {
-      playTone(950, 0.025, 0.035, "square");
+      if (!audioContext) return;
+
+      const now = audioContext.currentTime;
+
+      // Mély mechanikus kattanás
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.exponentialRampToValueAtTime(120, now + 0.03);
+
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.05);
+
+      // Finom magas fémes csengés
+      const bell = audioContext.createOscillator();
+      const bellGain = audioContext.createGain();
+
+      bell.type = "triangle";
+      bell.frequency.setValueAtTime(1600, now);
+
+      bellGain.gain.setValueAtTime(0.015, now);
+      bellGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
+
+      bell.connect(bellGain);
+      bellGain.connect(audioContext.destination);
+
+      bell.start(now);
+      bell.stop(now + 0.09);
     }
 
-    // Elegáns, meleg arany VIP csengés nyeréskor (A-dúr harmonikus akkordok)
     function playWinSound() {
-      const chordFrequencies = [440, 554.37, 659.25, 880, 1108.73];
-      chordFrequencies.forEach((freq, index) => {
-        setTimeout(() => playTone(freq, 0.35, 0.06, "sine"), index * 100);
+      if (!audioContext) return;
+
+      const notes = [
+        523.25, // C5
+        659.25, // E5
+        783.99, // G5
+        1046.5  // C6
+      ];
+
+      notes.forEach((freq, i) => {
+        const now = audioContext.currentTime + i * 0.14;
+
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        osc.type = "triangle";
+        osc.frequency.value = freq;
+
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.05, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.7);
+
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.7);
       });
     }
 
-    // Luxus arany- és rubintfólia eső animáció
     function launchConfetti() {
       const goldPalette = [
         "linear-gradient(135deg, #fff7df, #f5d77a)",
@@ -913,10 +791,8 @@
         "linear-gradient(135deg, #7f141b, #d4af37)",
         "#ffffff"
       ];
-
       const types = ["foil", "star", "sparkle"];
 
-      // 3 hullámban indítjuk a szóródást a megnövelt hatásért
       for (let wave = 0; wave < 3; wave++) {
         setTimeout(() => {
           const particleCount = wave === 0 ? 40 : 25;
@@ -925,12 +801,10 @@
             const type = types[Math.floor(Math.random() * types.length)];
             
             particle.className = `confetti ${type}`;
-            
-            // Sugárirányú robbanás a kerék közepéből
             const angle = Math.random() * Math.PI * 2;
             const distance = 140 + Math.random() * 480;
             const x = Math.cos(angle) * distance;
-            const y = Math.sin(angle) * distance - 60; // enyhe felfelé húzás
+            const y = Math.sin(angle) * distance - 60;
 
             const size = 6 + Math.random() * 9;
             const duration = 1800 + Math.random() * 1000;
@@ -945,7 +819,6 @@
             particle.style.setProperty("--duration", `${duration}ms`);
 
             document.body.appendChild(particle);
-
             setTimeout(() => particle.remove(), duration + 100);
           }
         }, wave * 220);
@@ -963,26 +836,26 @@
     function selectWeightedWinner() {
       const totalWeight = weights.reduce((sum, w) => sum + w, 0);
       let random = Math.random() * totalWeight;
-      
       for (let i = 0; i < weights.length; i++) {
         random -= weights[i];
         if (random <= 0) return i;
       }
-      
       return slices.length - 1;
     }
 
     async function saveResult(result) {
       const player = playerNameEl.value.trim();
-
-      await addDoc(entriesCollection, {
-        player,
-        result,
-        time: new Date().toLocaleString("hu-HU"),
-        createdAt: Date.now()
-      });
-
-      await renderEntries();
+      try {
+        await addDoc(entriesCollection, {
+          player,
+          result,
+          time: new Date().toLocaleString("hu-HU"),
+          createdAt: Date.now()
+        });
+        await renderEntries();
+      } catch (err) {
+        console.error("Mentési hiba:", err);
+      }
     }
 
     function spin() {
@@ -991,8 +864,7 @@
       ensureAudio();
       rotating = true;
       spinBtn.disabled = true;
-      
-      // Korábbi effektek eltávolítása
+
       resultEl.classList.remove("win-active");
       wheelStage.classList.remove("winning");
       resultEl.textContent = "Pörög a kerék…";
@@ -1000,14 +872,13 @@
       const winnerIndex = selectWeightedWinner();
       const rounds = 6 + Math.floor(Math.random() * 3);
 
+      // Pontosan a szelet geometriai közepére érkezik a pörgetés
       const currentNormalized = normalizeDegrees(currentRotation);
       const desiredNormalized = normalizeDegrees(-winnerIndex * segmentAngle);
-      const alignmentDelta =
-        normalizeDegrees(desiredNormalized - currentNormalized);
+      const alignmentDelta = normalizeDegrees(desiredNormalized - currentNormalized);
 
       const startRotation = currentRotation;
-      const targetRotation =
-        currentRotation + rounds * 360 + alignmentDelta;
+      const targetRotation = currentRotation + rounds * 360 + alignmentDelta;
 
       const duration = 4700 + Math.random() * 700;
       const startedAt = performance.now();
@@ -1016,15 +887,12 @@
       function animate(now) {
         const progress = Math.min((now - startedAt) / duration, 1);
         const eased = easeOutQuint(progress);
-        const rotation =
-          startRotation + (targetRotation - startRotation) * eased;
+        const rotation = startRotation + (targetRotation - startRotation) * eased;
 
         currentRotation = rotation;
         wheel.style.transform = `rotate(${rotation}deg)`;
 
-        const tickSegment = Math.floor(
-          normalizeDegrees(rotation + segmentAngle / 2) / segmentAngle
-        );
+        const tickSegment = Math.floor(normalizeDegrees(rotation + segmentAngle / 2) / segmentAngle);
 
         if (tickSegment !== lastTickSegment) {
           playTick();
@@ -1042,11 +910,10 @@
         const result = slices[winnerIndex];
         resultEl.innerHTML = `Az eredmény: <strong>${result}</strong>`;
 
-        // VIP nyeremény effektek aktiválása
         resultEl.classList.add("win-active");
         wheelStage.classList.add("winning");
 
-        saveResult(result).catch(() => {});
+        saveResult(result);
         playWinSound();
         launchConfetti();
 
@@ -1060,6 +927,10 @@
     spinBtn.addEventListener("click", spin);
     wheel.addEventListener("click", spin);
 
+    playerNameEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") spin();
+    });
+
     wheel.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
@@ -1070,27 +941,33 @@
     clearBtn.addEventListener("click", async () => {
       if (!confirm("Biztosan törlöd az összes pörgetést?")) return;
 
-      const entries = await getEntries();
-      await Promise.all(
-        entries.map((entry) => deleteDoc(doc(db, "porgetesek", entry.id)))
-      );
-
-      await renderEntries();
-      resultEl.classList.remove("win-active");
-      wheelStage.classList.remove("winning");
-      resultEl.textContent = "Az előzmények törölve.";
+      clearBtn.disabled = true;
+      try {
+        const snapshot = await getDocs(entriesCollection);
+        await Promise.all(snapshot.docs.map((d) => deleteDoc(doc(db, "porgetesek", d.id))));
+        await renderEntries();
+        resultEl.classList.remove("win-active");
+        wheelStage.classList.remove("winning");
+        resultEl.textContent = "Az előzmények törölve.";
+      } catch (err) {
+        alert("Hiba történt a törlés során.");
+      } finally {
+        clearBtn.disabled = false;
+      }
     });
 
     exportBtn.addEventListener("click", async () => {
+      exportBtn.disabled = true;
       const data = await getEntries();
-      const blob = new Blob([JSON.stringify(data, null, 2)], {
-        type: "application/json"
-      });
+      exportBtn.disabled = false;
 
+      if (!data) return;
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "szerencsekerek-pörgetések.json";
+      link.download = "szerencsekerek-porgetesek.json";
       link.click();
 
       setTimeout(() => URL.revokeObjectURL(url), 1000);
