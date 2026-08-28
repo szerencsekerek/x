@@ -2,14 +2,14 @@
 <html lang="hu">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
   <meta name="theme-color" content="#08050a">
 
   <title>Szerencsekerék – Pörgető</title>
 
   <style>
     :root {
-      --wheel-size: min(70vw, 590px);
+      --wheel-size: min(85vw, 590px);
       --bg: #080509;
       --bg2: #120712;
       --pink-dark: #c50091;
@@ -29,7 +29,7 @@
     body {
       min-height: 100vh;
       margin: 0;
-      padding: 24px;
+      padding: clamp(12px, 3vw, 24px);
       font-family: Inter, Arial, Helvetica, sans-serif;
       color: var(--text);
       background:
@@ -50,7 +50,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) 340px;
       gap: 28px;
-      padding: 28px;
+      padding: clamp(16px, 4vw, 28px);
       border-radius: 26px;
       background: linear-gradient(145deg, rgba(255, 255, 255, .035), rgba(255, 0, 170, .025)), rgba(14, 5, 12, .78);
       border: 1px solid rgba(255, 55, 193, .16);
@@ -64,7 +64,7 @@
 
     h1 {
       margin: 0;
-      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-size: clamp(1.8rem, 5vw, 3.5rem);
       font-weight: 950;
       letter-spacing: -.055em;
       background: linear-gradient(180deg, #ffffff 0%, #ffb9eb 45%, #ff38bd 100%);
@@ -77,14 +77,15 @@
     .subtitle {
       margin: 6px 0 14px;
       color: var(--muted);
-      font-size: .95rem;
+      font-size: clamp(0.85rem, 2vw, 0.95rem);
       letter-spacing: .02em;
     }
 
     .session-stats {
       display: flex;
       justify-content: center;
-      gap: 15px;
+      flex-wrap: wrap;
+      gap: 10px 15px;
       margin-bottom: 16px;
     }
 
@@ -94,7 +95,8 @@
       border-radius: 14px;
       padding: 10px 18px;
       text-align: center;
-      min-width: 130px;
+      flex: 1;
+      min-width: 120px;
     }
 
     .stat-card .label {
@@ -107,7 +109,7 @@
 
     .stat-card .value {
       display: block;
-      font-size: 1.25rem;
+      font-size: clamp(1.1rem, 3vw, 1.25rem);
       font-weight: 900;
       color: #ff72d2;
       margin-top: 2px;
@@ -145,7 +147,7 @@
     .wheel-shell {
       position: absolute;
       inset: 0;
-      padding: clamp(10px, 1.8vw, 16px);
+      padding: clamp(8px, 1.8vw, 16px);
       border-radius: 50%;
       background: linear-gradient(145deg, #ffb1e6 0%, #ff68cc 22%, #e918aa 50%, #ff69ce 76%, #ffb5e9 100%);
       border: 2px solid rgba(255,255,255,.35);
@@ -184,7 +186,7 @@
       pointer-events: none;
       text-align: center;
       color: #ffffff;
-      font-size: clamp(.65rem, 1.8vw, .95rem);
+      font-size: clamp(9px, 2.8vw, 15px);
       font-weight: 950;
       letter-spacing: -.02em;
       text-shadow: 0 2px 4px rgba(90,0,60,.75), 0 0 8px rgba(0,0,0,.25);
@@ -261,8 +263,8 @@
     .rivet {
       position: absolute;
       z-index: 15;
-      width: clamp(7px, 1.3vw, 11px);
-      height: clamp(7px, 1.3vw, 11px);
+      width: clamp(5px, 1.3vw, 11px);
+      height: clamp(5px, 1.3vw, 11px);
       border-radius: 50%;
       background: radial-gradient(circle at 35% 30%, #ffffff, #f9dff1 45%, #c58db5 100%);
       border: 1px solid rgba(120,0,80,.35);
@@ -279,7 +281,7 @@
 
     .config-row {
       display: grid;
-      grid-template-columns: 1fr 120px 130px;
+      grid-template-columns: 1fr 100px 120px;
       gap: 8px;
     }
 
@@ -325,14 +327,10 @@
       border-radius: 14px;
       color: white;
       background: rgba(255,0,170,.055);
+      font-size: clamp(0.9rem, 3vw, 1rem);
     }
 
-    .result strong { color: #ff72d2; font-size: 1.2rem; }
-
-    .result.win-active {
-      border-color: rgba(255,90,210,.8);
-      background: linear-gradient(135deg, rgba(255,0,170,.18), rgba(255,80,205,.06));
-    }
+    .result strong { color: #ff72d2; font-size: 1.15em; }
 
     /* MODAL */
     .modal-overlay {
@@ -356,15 +354,19 @@
       background: linear-gradient(145deg, #250620, #0d020c);
       border: 2px solid #ff38bd;
       border-radius: 20px;
-      padding: 28px;
+      padding: 24px;
       max-width: 420px;
       width: 100%;
       text-align: center;
     }
 
-    .modal-card h3 { margin: 0 0 10px; font-size: 1.6rem; color: #ff72d2; }
-    .modal-card p { font-size: .95rem; color: var(--muted); margin-bottom: 24px; }
-    .modal-actions { display: flex; gap: 12px; }
+    .modal-card h3 { margin: 0 0 10px; font-size: clamp(1.3rem, 4vw, 1.6rem); color: #ff72d2; }
+    .modal-card p { font-size: clamp(0.85rem, 3vw, 0.95rem); color: var(--muted); margin-bottom: 24px; }
+    
+    .modal-actions { 
+      display: flex; 
+      gap: 12px; 
+    }
 
     .modal-btn {
       flex: 1;
@@ -373,6 +375,7 @@
       border-radius: 12px;
       font-weight: 800;
       cursor: pointer;
+      font-size: clamp(0.8rem, 3vw, 1rem);
     }
 
     .modal-btn.risk { background: linear-gradient(135deg, #ff0055, #990000); color: white; }
@@ -382,7 +385,7 @@
     .side-panel { display: flex; flex-direction: column; gap: 12px; }
 
     .log {
-      min-height: 440px;
+      min-height: 250px;
       max-height: 560px;
       overflow: auto;
       padding: 16px;
@@ -437,6 +440,7 @@
       font-weight: 750;
       cursor: pointer;
       background: rgba(255,255,255,.045);
+      font-size: clamp(0.8rem, 3vw, 0.95rem);
     }
 
     /* CONFETTI */
@@ -452,9 +456,23 @@
       100% { opacity: 0; transform: translate(-50%, -50%) translate(var(--x), var(--y)) scale(.35) rotate(720deg); }
     }
 
+    /* MOBIL OPTIMALIZÁLÁS */
+    @media (max-width: 950px) {
+      .app {
+        grid-template-columns: 1fr; /* Két oszlopból egy lesz */
+      }
+      .log {
+        min-height: 200px; /* Ne foglaljon túl nagy helyet mobilon */
+      }
+    }
+
     @media (max-width: 560px) {
-      .config-row { grid-template-columns: 1fr 1fr; }
-      .config-row button { grid-column: span 2; }
+      .config-row {
+        grid-template-columns: 1fr; /* Egymás alá kerülnek a beállítások kis képernyőn */
+      }
+      .modal-actions {
+        flex-direction: column; /* A felugró ablak gombjai egymás alá kerülnek */
+      }
     }
   </style>
 </head>
@@ -515,7 +533,7 @@
       <section class="log">
         <div class="log-header">
           <h2>Elmentett pörgetések</h2>
-          <p>A legfrissebb 20 eredmény jelenik meg.</p>
+          <p>A legfrissebb 20 eredmény.</p>
         </div>
         <div id="entries"></div>
       </section>
@@ -562,19 +580,18 @@
     const db = getFirestore(app);
     const entriesCollection = collection(db, "porgetesek");
 
-    /* NYEREMÉNYEK ÉS ÚJ SÚLYOZÁS */
+    /* NYEREMÉNYEK ÉS SÚLYOZÁS */
     const slices = [
-      "500 Ft",                  // Index 0
-      "1000 Ft",                 // Index 1
-      "2000 Ft",                 // Index 2
-      "3000 Ft",                 // Index 3 -> 0 ESÉLY
-      "5000 Ft",                 // Index 4 -> 0 ESÉLY
-      "🎁 +1 PÖRGETÉS",          // Index 5 -> 20%
-      "🔥 DUPLÁZÁS",             // Index 6 -> 3%
-      "💀 MINDENT VAGY SEMMIT"   // Index 7 -> 7%
+      "500 Ft",                  
+      "1000 Ft",                 
+      "2000 Ft",                 
+      "3000 Ft",                 
+      "5000 Ft",                 
+      "🎁 +1 PÖRGETÉS",          
+      "🔥 DUPLÁZÁS",             
+      "💀 MINDENT VAGY SEMMIT"   
     ];
 
-    // SÚLYOZÁS: Duplázás 3%, Mindent vagy semmit 7%
     const baseWeights = [
       39,   // 500 Ft
       28,   // 1000 Ft
@@ -582,8 +599,8 @@
       0,    // 3000 Ft (0 ESÉLY)
       0,    // 5000 Ft (0 ESÉLY)
       20,   // 🎁 +1 PÖRGETÉS
-      3,    // 🔥 DUPLÁZÁS (3% esély)
-      7     // 💀 MINDENT VAGY SEMMIT (7% esély)
+      3,    // 🔥 DUPLÁZÁS 
+      7     // 💀 MINDENT VAGY SEMMIT 
     ];
 
     const colors = ["#ff65ca", "#e900a5", "#ff72d1", "#d9009c", "#ff55c3", "#e500a3", "#ff68cc", "#d8009b"];
@@ -602,7 +619,6 @@
     const setSpinsBtn = document.getElementById("setSpinsBtn");
     const spinBtn = document.getElementById("spin");
     const clearBtn = document.getElementById("clear");
-    const exportBtn = document.getElementById("export");
     const sessionTotalEl = document.getElementById("sessionTotal");
     const spinCountEl = document.getElementById("spinCount");
 
@@ -759,8 +775,8 @@
 
       // Ha nincs még session nyeremény (0 Ft), kikapcsoljuk a Duplázást (6) és a Mindent vagy semmit (7) opciókat
       if (sessionTotal <= 0) {
-        currentWeights[6] = 0; // 🔥 DUPLÁZÁS kikapcsolva
-        currentWeights[7] = 0; // 💀 MINDENT VAGY SEMMIT kikapcsolva
+        currentWeights[6] = 0;
+        currentWeights[7] = 0;
       }
 
       const totalWeight = currentWeights.reduce((sum, w) => sum + w, 0);
@@ -801,7 +817,6 @@
       }
     }
 
-    /* KINYEREMÉNYEZÉS ÉS SPECIÁLIS MEZŐK KEZELÉSE */
     function processReward(sliceName) {
       if (sliceName.includes("Ft")) {
         const val = parseInt(sliceName.replace(/[^0-9]/g, ""), 10);
