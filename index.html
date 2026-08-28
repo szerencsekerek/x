@@ -10,167 +10,108 @@
   <style>
     :root {
       --wheel-size: min(70vw, 590px);
-
       --bg: #080509;
       --bg2: #120712;
-
       --pink-dark: #c50091;
       --pink: #f019b5;
       --pink-light: #ff72d2;
       --pink-soft: #ff9de0;
-
       --text: #fff;
       --muted: rgba(255,255,255,.65);
-
       --panel: rgba(25, 5, 22, .78);
       --border: rgba(255, 77, 203, .25);
-
       --radius: 20px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      color-scheme: dark;
-    }
+    * { box-sizing: border-box; }
+    html { color-scheme: dark; }
 
     body {
       min-height: 100vh;
       margin: 0;
       padding: 24px;
-
-      font-family:
-        Inter,
-        Arial,
-        Helvetica,
-        sans-serif;
-
+      font-family: Inter, Arial, Helvetica, sans-serif;
       color: var(--text);
-
       background:
-        radial-gradient(
-          circle at 50% 25%,
-          rgba(255, 0, 170, .16),
-          transparent 28%
-        ),
-        radial-gradient(
-          circle at 15% 80%,
-          rgba(255, 0, 170, .08),
-          transparent 25%
-        ),
-        radial-gradient(
-          circle at 90% 20%,
-          rgba(190, 0, 130, .08),
-          transparent 25%
-        ),
-        linear-gradient(
-          180deg,
-          #120710 0%,
-          #080509 55%,
-          #050306 100%
-        );
-
+        radial-gradient(circle at 50% 25%, rgba(255, 0, 170, .16), transparent 28%),
+        radial-gradient(circle at 15% 80%, rgba(255, 0, 170, .08), transparent 25%),
+        radial-gradient(circle at 90% 20%, rgba(190, 0, 130, .08), transparent 25%),
+        linear-gradient(180deg, #120710 0%, #080509 55%, #050306 100%);
       overflow-x: hidden;
-
       -webkit-font-smoothing: antialiased;
     }
 
-    button,
-    input {
-      font: inherit;
-    }
-
-    button {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    /* =========================================
-       APP
-    ========================================= */
+    button, input { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
 
     .app {
       width: min(1180px, 100%);
       margin: 0 auto;
-
       display: grid;
       grid-template-columns: minmax(0, 1fr) 340px;
-
       gap: 28px;
-
       padding: 28px;
-
       border-radius: 26px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255, 255, 255, .035),
-          rgba(255, 0, 170, .025)
-        ),
-        rgba(14, 5, 12, .78);
-
+      background: linear-gradient(145deg, rgba(255, 255, 255, .035), rgba(255, 0, 170, .025)), rgba(14, 5, 12, .78);
       border: 1px solid rgba(255, 55, 193, .16);
-
-      box-shadow:
-        0 35px 100px rgba(0,0,0,.75),
-        0 0 80px rgba(255,0,170,.05);
-
+      box-shadow: 0 35px 100px rgba(0,0,0,.75), 0 0 80px rgba(255,0,170,.05);
       backdrop-filter: blur(18px);
     }
 
-    .game-panel,
-    .side-panel {
-      min-width: 0;
-    }
+    .game-panel, .side-panel { min-width: 0; }
 
-    /* =========================================
-       HEADER
-    ========================================= */
-
-    .header {
-      text-align: center;
-      margin-bottom: 16px;
-    }
+    .header { text-align: center; margin-bottom: 16px; }
 
     h1 {
       margin: 0;
-
       font-size: clamp(2rem, 5vw, 3.5rem);
-
       font-weight: 950;
-
       letter-spacing: -.055em;
-
-      background:
-        linear-gradient(
-          180deg,
-          #ffffff 0%,
-          #ffb9eb 45%,
-          #ff38bd 100%
-        );
-
+      background: linear-gradient(180deg, #ffffff 0%, #ffb9eb 45%, #ff38bd 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-
-      text-shadow:
-        0 0 35px rgba(255, 0, 180, .18);
+      text-shadow: 0 0 35px rgba(255, 0, 180, .18);
     }
 
     .subtitle {
-      margin: 10px 0 0;
-
+      margin: 6px 0 14px;
       color: var(--muted);
-
       font-size: .95rem;
       letter-spacing: .02em;
     }
 
-    /* =========================================
-       WHEEL AREA
-    ========================================= */
+    .session-stats {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 65, 200, .25);
+      border-radius: 14px;
+      padding: 10px 18px;
+      text-align: center;
+      min-width: 130px;
+    }
+
+    .stat-card .label {
+      display: block;
+      font-size: .75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .stat-card .value {
+      display: block;
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #ff72d2;
+      margin-top: 2px;
+    }
 
     .wheel-area {
       display: flex;
@@ -181,234 +122,72 @@
 
     .wheel-stage {
       position: relative;
-
       width: min(100%, var(--wheel-size));
       aspect-ratio: 1 / 1;
-
       isolation: isolate;
     }
 
-    /*
-      Pink glow behind wheel
-    */
-
     .wheel-stage::before {
       content: "";
-
       position: absolute;
-
       inset: 10%;
-
       z-index: -2;
-
       border-radius: 50%;
-
-      background:
-        radial-gradient(
-          circle,
-          rgba(255, 0, 190, .30),
-          transparent 68%
-        );
-
+      background: radial-gradient(circle, rgba(255, 0, 190, .30), transparent 68%);
       filter: blur(45px);
-
       opacity: .7;
-
-      transition:
-        opacity .4s ease,
-        transform .4s ease;
+      transition: opacity .4s ease, transform .4s ease;
     }
 
-    .wheel-stage.winning::before {
-      opacity: 1;
-      transform: scale(1.12);
-    }
-
-    /* Pörgetés közben kikapcsoljuk a drága blur effektet,
-       hogy mobilon is stabilabb legyen az FPS. */
-    .wheel-stage.spinning::before {
-      opacity: .25;
-      filter: none;
-    }
-
-    .wheel-stage.spinning .wheel {
-      box-shadow:
-        inset 0 0 0 3px rgba(255,255,255,.12),
-        inset 0 0 20px rgba(70,0,50,.28);
-    }
-
-    /* =========================================
-       OUTER WHEEL RING
-    ========================================= */
+    .wheel-stage.winning::before { opacity: 1; transform: scale(1.12); }
+    .wheel-stage.spinning::before { opacity: .25; filter: none; }
 
     .wheel-shell {
       position: absolute;
-
       inset: 0;
-
       padding: clamp(10px, 1.8vw, 16px);
-
       border-radius: 50%;
-
-      background:
-        linear-gradient(
-          145deg,
-          #ffb1e6 0%,
-          #ff68cc 22%,
-          #e918aa 50%,
-          #ff69ce 76%,
-          #ffb5e9 100%
-        );
-
+      background: linear-gradient(145deg, #ffb1e6 0%, #ff68cc 22%, #e918aa 50%, #ff69ce 76%, #ffb5e9 100%);
       border: 2px solid rgba(255,255,255,.35);
-
-      box-shadow:
-        0 28px 65px rgba(0,0,0,.75),
-        0 0 0 4px rgba(255, 56, 193, .15),
-        0 0 45px rgba(255, 0, 170, .18),
-        inset 0 3px 7px rgba(255,255,255,.5),
-        inset 0 -8px 18px rgba(135,0,90,.35);
+      box-shadow: 0 28px 65px rgba(0,0,0,.75), 0 0 0 4px rgba(255, 56, 193, .15), 0 0 45px rgba(255, 0, 170, .18), inset 0 3px 7px rgba(255,255,255,.5), inset 0 -8px 18px rgba(135,0,90,.35);
     }
-
-    /*
-      Inner ring
-    */
-
-    .wheel-shell::before {
-      content: "";
-
-      position: absolute;
-
-      inset: 5px;
-
-      border-radius: 50%;
-
-      border: 2px solid rgba(255,255,255,.28);
-
-      pointer-events: none;
-
-      z-index: 10;
-    }
-
-    /*
-      Small decorative inner ring
-    */
-
-    .wheel-shell::after {
-      content: "";
-
-      position: absolute;
-
-      inset: 10px;
-
-      border-radius: 50%;
-
-      border: 1px solid rgba(160,0,100,.35);
-
-      pointer-events: none;
-
-      z-index: 10;
-    }
-
-    /* =========================================
-       WHEEL
-    ========================================= */
 
     .wheel {
       position: relative;
-
       width: 100%;
       height: 100%;
-
       overflow: hidden;
-
       border-radius: 50%;
-
       background: #ff2ab8;
-
       border: 3px solid rgba(255,255,255,.22);
-
-      box-shadow:
-        inset 0 0 0 3px rgba(255,255,255,.12),
-        inset 0 0 35px rgba(70,0,50,.35),
-        0 3px 8px rgba(0,0,0,.4);
-
+      box-shadow: inset 0 0 0 3px rgba(255,255,255,.12), inset 0 0 35px rgba(70,0,50,.35), 0 3px 8px rgba(0,0,0,.4);
       will-change: transform;
       transform: translate3d(0, 0, 0);
       backface-visibility: hidden;
       transform-origin: center center;
-
       cursor: pointer;
-
       user-select: none;
-
       touch-action: manipulation;
     }
-
-    /*
-      Slight glossy overlay
-    */
-
-    .wheel::before {
-      content: "";
-
-      position: absolute;
-
-      inset: 0;
-
-      z-index: 3;
-
-      border-radius: 50%;
-
-      pointer-events: none;
-
-      background:
-        radial-gradient(
-          circle at 28% 16%,
-          rgba(255,255,255,.20),
-          transparent 17%
-        ),
-        radial-gradient(
-          circle,
-          transparent 48%,
-          rgba(90,0,60,.20) 100%
-        );
-    }
-
-    /* =========================================
-       SLICE LABELS
-    ========================================= */
 
     .wheel-label {
       position: absolute;
       left: 50%;
       top: 50%;
       z-index: 5;
-
-      /* A teljes kerékmagasságú doboz miatt a felirat
-         pontosan a szelet középvonalára helyezhető. */
       width: 34%;
       height: 100%;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       transform-origin: center center;
       pointer-events: none;
       text-align: center;
-
       color: #ffffff;
-      font-size: clamp(.68rem, 1.9vw, 1rem);
+      font-size: clamp(.65rem, 1.8vw, .95rem);
       font-weight: 950;
       letter-spacing: -.02em;
-
-      text-shadow:
-        0 2px 4px rgba(90,0,60,.75),
-        0 0 8px rgba(0,0,0,.25);
-
-      will-change: transform;
-      backface-visibility: hidden;
+      text-shadow: 0 2px 4px rgba(90,0,60,.75), 0 0 8px rgba(0,0,0,.25);
     }
 
     .wheel-label span {
@@ -416,826 +195,266 @@
       white-space: nowrap;
       color: #ffffff;
       transform-origin: center;
-      will-change: transform;
     }
-
-    /* =========================================
-       CENTER HUB
-    ========================================= */
 
     .hub {
       position: absolute;
-
       left: 50%;
       top: 50%;
-
       z-index: 8;
-
       width: 25%;
-
       aspect-ratio: 1;
-
-      transform:
-        translate(-50%, -50%);
-
+      transform: translate(-50%, -50%);
       border-radius: 50%;
-
-      background:
-        radial-gradient(
-          circle at 40% 32%,
-          #ffffff 0%,
-          #ffffff 70%,
-          #f5e8f1 100%
-        );
-
+      background: radial-gradient(circle at 40% 32%, #ffffff 0%, #ffffff 70%, #f5e8f1 100%);
       border: 4px solid rgba(255,255,255,.9);
-
-      box-shadow:
-        0 10px 30px rgba(0,0,0,.45),
-        0 0 0 7px rgba(255,255,255,.13),
-        inset 0 2px 5px rgba(255,255,255,.8);
-
+      box-shadow: 0 10px 30px rgba(0,0,0,.45), 0 0 0 7px rgba(255,255,255,.13), inset 0 2px 5px rgba(255,255,255,.8);
       pointer-events: none;
     }
 
     .hub::after {
       content: "SPIN";
-
       position: absolute;
-
       left: 50%;
       top: 50%;
-
-      transform:
-        translate(-50%, -50%);
-
+      transform: translate(-50%, -50%);
       color: #e800a4;
-
-      font-size: clamp(
-        .55rem,
-        1.5vw,
-        .85rem
-      );
-
+      font-size: clamp(.55rem, 1.5vw, .85rem);
       font-weight: 1000;
-
       letter-spacing: .08em;
     }
 
-    /* =========================================
-       POINTER
-    ========================================= */
-
     .pointer {
       position: absolute;
-
       left: 50%;
       top: -9px;
-
       z-index: 20;
-
       width: clamp(38px, 7vw, 58px);
       height: clamp(62px, 11vw, 84px);
-
-      transform:
-        translateX(-50%);
-
+      transform: translateX(-50%);
       pointer-events: none;
-
-      filter:
-        drop-shadow(0 8px 8px rgba(0,0,0,.5));
+      filter: drop-shadow(0 8px 8px rgba(0,0,0,.5));
     }
 
     .pointer::before {
       content: "";
-
       position: absolute;
-
       inset: 0;
-
-      clip-path:
-        polygon(
-          50% 100%,
-          0 27%,
-          10% 5%,
-          50% 0%,
-          90% 5%,
-          100% 27%
-        );
-
-      background:
-        linear-gradient(
-          145deg,
-          #ffffff 0%,
-          #ffffff 45%,
-          #f5d9ed 75%,
-          #c7a5bd 100%
-        );
-
+      clip-path: polygon(50% 100%, 0 27%, 10% 5%, 50% 0%, 90% 5%, 100% 27%);
+      background: linear-gradient(145deg, #ffffff 0%, #ffffff 45%, #f5d9ed 75%, #c7a5bd 100%);
       border-radius: 6px;
     }
 
     .pointer::after {
       content: "";
-
       position: absolute;
-
       left: 50%;
       top: 9px;
-
       width: 40%;
       aspect-ratio: 1;
-
-      transform:
-        translateX(-50%);
-
+      transform: translateX(-50%);
       border-radius: 50%;
-
-      background:
-        radial-gradient(
-          circle at 35% 30%,
-          #555,
-          #252027 70%
-        );
-
-      box-shadow:
-        inset 0 2px 3px rgba(255,255,255,.35);
+      background: radial-gradient(circle at 35% 30%, #555, #252027 70%);
+      box-shadow: inset 0 2px 3px rgba(255,255,255,.35);
     }
-
-    /* =========================================
-       DECORATIVE RIVETS
-    ========================================= */
 
     .rivet {
       position: absolute;
-
       z-index: 15;
-
       width: clamp(7px, 1.3vw, 11px);
       height: clamp(7px, 1.3vw, 11px);
-
       border-radius: 50%;
-
-      background:
-        radial-gradient(
-          circle at 35% 30%,
-          #ffffff,
-          #f9dff1 45%,
-          #c58db5 100%
-        );
-
+      background: radial-gradient(circle at 35% 30%, #ffffff, #f9dff1 45%, #c58db5 100%);
       border: 1px solid rgba(120,0,80,.35);
-
-      box-shadow:
-        0 2px 4px rgba(0,0,0,.3),
-        inset 0 1px 1px rgba(255,255,255,.8);
-
+      box-shadow: 0 2px 4px rgba(0,0,0,.3), inset 0 1px 1px rgba(255,255,255,.8);
       pointer-events: none;
     }
 
-    /* =========================================
-       CONTROLS
-    ========================================= */
-
-    .controls {
+    .controls-wrapper {
       width: min(560px, 100%);
-
-      display: grid;
-
-      grid-template-columns:
-        minmax(0, 1fr)
-        auto;
-
+      display: flex;
+      flex-direction: column;
       gap: 10px;
+    }
+
+    .config-row {
+      display: grid;
+      grid-template-columns: 1fr 120px 130px;
+      gap: 8px;
     }
 
     .player-input {
       width: 100%;
-
-      min-width: 0;
-
-      padding: 14px 15px;
-
+      padding: 12px 14px;
       color: white;
-
       border: 1px solid rgba(255,65,200,.3);
-
       border-radius: 13px;
-
       outline: none;
-
-      background:
-        rgba(255,255,255,.055);
-
-      transition:
-        border-color .16s ease,
-        box-shadow .16s ease;
+      background: rgba(255,255,255,.055);
     }
 
-    .player-input::placeholder {
-      color: rgba(255,255,255,.45);
-    }
-
-    .player-input:focus {
-      border-color: rgba(255,72,202,.8);
-
-      box-shadow:
-        0 0 0 4px rgba(255,0,170,.12),
-        0 0 20px rgba(255,0,170,.08);
+    .spin-input {
+      text-align: center;
     }
 
     .spin-btn {
-      min-width: 175px;
-
-      padding: 13px 24px;
-
+      width: 100%;
+      padding: 14px 24px;
       border: 0;
-
       border-radius: 13px;
-
       color: white;
-
       font-weight: 1000;
-
       letter-spacing: .04em;
-
       cursor: pointer;
-
-      background:
-        linear-gradient(
-          135deg,
-          #ff63cd,
-          #f000a8 48%,
-          #c6008d
-        );
-
-      box-shadow:
-        0 12px 30px rgba(255,0,170,.25),
-        inset 0 1px 0 rgba(255,255,255,.4);
-
-      transition:
-        transform .16s ease,
-        filter .16s ease,
-        box-shadow .16s ease;
+      background: linear-gradient(135deg, #ff63cd, #f000a8 48%, #c6008d);
+      box-shadow: 0 12px 30px rgba(255,0,170,.25), inset 0 1px 0 rgba(255,255,255,.4);
+      transition: transform .16s ease, filter .16s ease;
     }
 
-    .spin-btn:hover:not(:disabled) {
-      transform: translateY(-2px);
-
-      filter: brightness(1.08);
-
-      box-shadow:
-        0 18px 40px rgba(255,0,170,.35),
-        0 0 20px rgba(255,0,170,.16);
-    }
-
-    .spin-btn:active:not(:disabled) {
-      transform:
-        translateY(1px)
-        scale(.985);
-    }
-
-    .spin-btn:disabled {
-      opacity: .45;
-
-      cursor: not-allowed;
-
-      box-shadow: none;
-    }
-
-    /* =========================================
-       RESULT
-    ========================================= */
+    .spin-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.08); }
+    .spin-btn:disabled { opacity: .45; cursor: not-allowed; }
 
     .result {
       width: min(560px, 100%);
-
       min-height: 62px;
-
       padding: 14px 18px;
-
       display: grid;
-
       place-items: center;
-
       text-align: center;
-
       border: 1px solid rgba(255,65,200,.2);
-
       border-radius: 14px;
-
       color: white;
-
-      background:
-        rgba(255,0,170,.055);
-
-      transition:
-        all .4s ease;
+      background: rgba(255,0,170,.055);
     }
 
-    .result strong {
-      color: #ff72d2;
-
-      font-size: 1.2rem;
-    }
+    .result strong { color: #ff72d2; font-size: 1.2rem; }
 
     .result.win-active {
-      border-color:
-        rgba(255,90,210,.8);
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(255,0,170,.18),
-          rgba(255,80,205,.06)
-        );
-
-      animation:
-        win-bounce .55s
-        cubic-bezier(.175,.885,.32,1.275),
-        pink-pulse 2s
-        infinite alternate ease-in-out;
+      border-color: rgba(255,90,210,.8);
+      background: linear-gradient(135deg, rgba(255,0,170,.18), rgba(255,80,205,.06));
     }
 
-    .result.win-active strong {
-      color: #ffffff;
-
-      text-shadow:
-        0 0 14px rgba(255,60,205,.75);
-    }
-
-    @keyframes win-bounce {
-      0% {
-        transform: scale(.94);
-      }
-
-      50% {
-        transform: scale(1.04);
-      }
-
-      100% {
-        transform: scale(1);
-      }
-    }
-
-    @keyframes pink-pulse {
-      0% {
-        box-shadow:
-          0 0 12px rgba(255,0,170,.15);
-      }
-
-      100% {
-        box-shadow:
-          0 0 30px rgba(255,0,170,.4);
-      }
-    }
-
-    /* =========================================
-       SIDE PANEL
-    ========================================= */
-
-    .side-panel {
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
       display: flex;
-
-      flex-direction: column;
-
-      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease;
     }
+
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .modal-card {
+      background: linear-gradient(145deg, #250620, #0d020c);
+      border: 2px solid #ff38bd;
+      border-radius: 20px;
+      padding: 28px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .modal-card h3 { margin: 0 0 10px; font-size: 1.6rem; color: #ff72d2; }
+    .modal-card p { font-size: .95rem; color: var(--muted); margin-bottom: 24px; }
+    .modal-actions { display: flex; gap: 12px; }
+
+    .modal-btn {
+      flex: 1;
+      padding: 12px;
+      border: 0;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .modal-btn.risk { background: linear-gradient(135deg, #ff0055, #990000); color: white; }
+    .modal-btn.safe { background: rgba(255, 255, 255, .15); color: white; }
+
+    /* SIDE PANEL */
+    .side-panel { display: flex; flex-direction: column; gap: 12px; }
 
     .log {
       min-height: 440px;
       max-height: 560px;
-
       overflow: auto;
-
       padding: 16px;
-
       border: 1px solid rgba(255,55,193,.18);
-
       border-radius: 18px;
-
-      background:
-        linear-gradient(
-          150deg,
-          rgba(255,255,255,.035),
-          rgba(255,0,170,.025)
-        ),
-        rgba(10,4,9,.86);
-
-      backdrop-filter: blur(16px);
-    }
-
-    .log::-webkit-scrollbar {
-      width: 7px;
-    }
-
-    .log::-webkit-scrollbar-thumb {
-      border-radius: 99px;
-
-      background:
-        rgba(255,50,190,.3);
+      background: rgba(10,4,9,.86);
     }
 
     .log-header {
       position: sticky;
-
       top: -16px;
-
       z-index: 3;
-
       margin: -16px -16px 14px;
-
       padding: 16px;
-
-      border-bottom:
-        1px solid rgba(255,255,255,.06);
-
-      background:
-        rgba(12,4,10,.96);
-
-      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      background: rgba(12,4,10,.96);
     }
 
-    .log-header h2 {
-      margin: 0;
-
-      font-size: 1.08rem;
-
-      color: white;
-    }
-
-    .log-header p {
-      margin: 5px 0 0;
-
-      color: var(--muted);
-
-      font-size: .8rem;
-    }
+    .log-header h2 { margin: 0; font-size: 1.08rem; color: white; }
+    .log-header p { margin: 5px 0 0; color: var(--muted); font-size: .8rem; }
 
     .entry {
       position: relative;
-
       margin-bottom: 9px;
-
-      padding:
-        12px
-        12px
-        12px
-        17px;
-
-      border:
-        1px solid rgba(255,255,255,.055);
-
+      padding: 12px 12px 12px 17px;
+      border: 1px solid rgba(255,255,255,.055);
       border-radius: 12px;
-
-      background:
-        rgba(255,255,255,.035);
+      background: rgba(255,255,255,.035);
     }
 
     .entry::before {
       content: "";
-
       position: absolute;
-
-      left: 0;
-      top: 10px;
-      bottom: 10px;
-
+      left: 0; top: 10px; bottom: 10px;
       width: 3px;
-
-      border-radius:
-        0 3px 3px 0;
-
-      background:
-        linear-gradient(
-          180deg,
-          #ff70d2,
-          #d8009d
-        );
-
-      box-shadow:
-        0 0 8px rgba(255,0,170,.3);
+      border-radius: 0 3px 3px 0;
+      background: linear-gradient(180deg, #ff70d2, #d8009d);
     }
 
-    .entry-result {
-      display: block;
+    .entry-result { display: block; color: white; font-size: .92rem; font-weight: 750; }
+    .entry-result.session-end { color: #ff72d2; font-size: 1.05rem; text-shadow: 0 0 8px rgba(255, 0, 170, 0.4); }
+    .entry-meta { display: block; margin-top: 4px; color: var(--muted); font-size: .75rem; }
+    .empty { padding: 30px 10px; color: var(--muted); text-align: center; font-size: .9rem; }
 
-      color: white;
-
-      font-size: .92rem;
-
-      font-weight: 750;
-    }
-
-    .entry-meta {
-      display: block;
-
-      margin-top: 4px;
-
-      color: var(--muted);
-
-      font-size: .75rem;
-    }
-
-    .empty {
-      padding: 30px 10px;
-
-      color: var(--muted);
-
-      text-align: center;
-
-      font-size: .9rem;
-    }
-
-    /* =========================================
-       SIDE BUTTONS
-    ========================================= */
-
-    .side-actions {
-      display: grid;
-
-      grid-template-columns: 1fr 1fr;
-
-      gap: 9px;
-    }
+    .side-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
 
     .secondary-btn {
       padding: 11px 12px;
-
-      border:
-        1px solid rgba(255,60,195,.22);
-
+      border: 1px solid rgba(255,60,195,.22);
       border-radius: 12px;
-
       color: white;
-
       font-weight: 750;
-
       cursor: pointer;
-
-      background:
-        rgba(255,255,255,.045);
-
-      transition:
-        transform .16s ease,
-        background .16s ease,
-        border-color .16s ease;
+      background: rgba(255,255,255,.045);
     }
 
-    .secondary-btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-
-      background:
-        rgba(255,0,170,.1);
-
-      border-color:
-        rgba(255,70,200,.4);
-    }
-
-    .secondary-btn:disabled {
-      opacity: .5;
-
-      cursor: not-allowed;
-    }
-
-    /* =========================================
-       CONFETTI
-    ========================================= */
-
+    /* CONFETTI */
     .confetti {
-      position: fixed;
-
-      left: 50%;
-      top: 45%;
-
-      z-index: 100;
-
-      pointer-events: none;
-
-      will-change:
-        transform,
-        opacity;
-
-      animation:
-        pink-particle
-        var(--duration, 2200ms)
-        cubic-bezier(.12,.78,.32,1)
-        forwards;
+      position: fixed; left: 50%; top: 45%; z-index: 100; pointer-events: none;
+      animation: pink-particle var(--duration, 2200ms) cubic-bezier(.12,.78,.32,1) forwards;
     }
-
-    .confetti.foil {
-      width: var(--size, 10px);
-
-      height:
-        calc(var(--size, 10px) * 1.6);
-
-      border-radius: 3px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #ffffff,
-          #ff80d5,
-          #ed00a8
-        );
-
-      box-shadow:
-        0 0 10px rgba(255,0,170,.45);
-    }
-
-    .confetti.star {
-      width: var(--size, 12px);
-      height: var(--size, 12px);
-
-      clip-path:
-        polygon(
-          50% 0%,
-          61% 35%,
-          98% 35%,
-          68% 57%,
-          79% 91%,
-          50% 70%,
-          21% 91%,
-          32% 57%,
-          2% 35%,
-          39% 35%
-        );
-
-      background:
-        linear-gradient(
-          45deg,
-          #ffffff,
-          #ff7ed5,
-          #ec00a7
-        );
-
-      filter:
-        drop-shadow(
-          0 0 6px rgba(255,0,170,.7)
-        );
-    }
-
-    .confetti.sparkle {
-      width: var(--size, 6px);
-      height: var(--size, 6px);
-
-      border-radius: 50%;
-
-      background: white;
-
-      box-shadow:
-        0 0 10px white,
-        0 0 18px #ff2abb;
-    }
+    .confetti.foil { width: 10px; height: 16px; background: linear-gradient(135deg, #fff, #ff80d5, #ed00a8); }
 
     @keyframes pink-particle {
-      0% {
-        opacity: 0;
-
-        transform:
-          translate(-50%, -50%)
-          translate(0,0)
-          scale(.2)
-          rotate(0deg);
-      }
-
-      15% {
-        opacity: 1;
-
-        transform:
-          translate(-50%, -50%)
-          translate(
-            calc(var(--x) * .35),
-            calc(var(--y) * .35)
-          )
-          scale(1.25)
-          rotate(180deg);
-      }
-
-      100% {
-        opacity: 0;
-
-        transform:
-          translate(-50%, -50%)
-          translate(
-            var(--x),
-            var(--y)
-          )
-          scale(.35)
-          rotate(720deg);
-      }
+      0% { opacity: 0; transform: translate(-50%, -50%) translate(0,0) scale(.2) rotate(0deg); }
+      15% { opacity: 1; transform: translate(-50%, -50%) translate(calc(var(--x) * .35), calc(var(--y) * .35)) scale(1.25) rotate(180deg); }
+      100% { opacity: 0; transform: translate(-50%, -50%) translate(var(--x), var(--y)) scale(.35) rotate(720deg); }
     }
-
-    /* =========================================
-       TABLET
-    ========================================= */
-
-    @media (max-width: 950px) {
-
-      :root {
-        --wheel-size: min(88vw, 600px);
-      }
-
-      body {
-        padding: 12px;
-      }
-
-      .app {
-        width: min(680px, 100%);
-
-        grid-template-columns: 1fr;
-
-        padding: 20px;
-      }
-
-      .log {
-        min-height: 0;
-        max-height: 380px;
-      }
-    }
-
-    /* =========================================
-       MOBILE
-    ========================================= */
 
     @media (max-width: 560px) {
-
-      :root {
-        --wheel-size: min(92vw, 430px);
-      }
-
-      body {
-        padding: 7px;
-      }
-
-      .app {
-        padding: 16px 10px;
-
-        gap: 20px;
-
-        border-radius: 18px;
-      }
-
-      .header {
-        margin-bottom: 7px;
-      }
-
-      h1 {
-        font-size: 2.15rem;
-      }
-
-      .subtitle {
-        font-size: .85rem;
-      }
-
-      .wheel-stage {
-        width: var(--wheel-size);
-      }
-
-      .wheel-label {
-        width: 36%;
-        height: 100%;
-
-        font-size:
-          clamp(
-            .58rem,
-            2.7vw,
-            .8rem
-          );
-      }
-
-      .controls {
-        grid-template-columns: 1fr;
-      }
-
-      .spin-btn {
-        width: 100%;
-
-        min-height: 52px;
-      }
-
-      .side-actions {
-        grid-template-columns: 1fr;
-      }
-
-      .log {
-        max-height: 330px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-
-      *,
-      *::before,
-      *::after {
-        scroll-behavior: auto !important;
-
-        animation-duration: .01ms !important;
-
-        animation-iteration-count: 1 !important;
-
-        transition-duration: .01ms !important;
-      }
+      .config-row { grid-template-columns: 1fr 1fr; }
+      .config-row button { grid-column: span 2; }
     }
   </style>
 </head>
@@ -1244,1461 +463,463 @@
 
   <main class="app">
 
-    <!-- =====================================
-         JÁTÉK
-    ====================================== -->
-
     <section class="game-panel">
 
       <header class="header">
-
         <h1>Szerencsekerék</h1>
+        <p class="subtitle">Vajon mit tartogat számodra a szerencse?</p>
 
-        <p class="subtitle">
-          Vajon milyen ajándékba ütközöl ma?
-        </p>
-
+        <div class="session-stats">
+          <div class="stat-card">
+            <span class="label">Session Nyeremény</span>
+            <span id="sessionTotal" class="value">0 Ft</span>
+          </div>
+          <div class="stat-card">
+            <span class="label">Pörgetések</span>
+            <span id="spinCount" class="value">0</span>
+          </div>
+        </div>
       </header>
-
 
       <div class="wheel-area">
 
-        <div
-          id="wheelStage"
-          class="wheel-stage"
-        >
-
-          <div
-            class="pointer"
-            aria-hidden="true"
-          ></div>
-
+        <div id="wheelStage" class="wheel-stage">
+          <div class="pointer" aria-hidden="true"></div>
           <div class="wheel-shell">
+            <div id="wheel" class="wheel" role="button" tabindex="0"></div>
+          </div>
+          <div class="hub" aria-hidden="true"></div>
+        </div>
 
-            <div
-              id="wheel"
-              class="wheel"
-              role="button"
-              tabindex="0"
-              aria-label="Szerencsekerék pörgetése"
-            ></div>
-
+        <div class="controls-wrapper">
+          <div class="config-row">
+            <input id="playerName" class="player-input" type="text" maxlength="30" placeholder="Nicknév">
+            <input id="customSpins" class="player-input spin-input" type="number" min="1" max="100" value="5" placeholder="db">
+            <button id="setSpinsBtn" class="secondary-btn" type="button" style="border-color: rgba(255,72,202,.5);">Start / Reset</button>
           </div>
 
-          <div
-            class="hub"
-            aria-hidden="true"
-          ></div>
-
-        </div>
-
-
-        <div class="controls">
-
-          <input
-            id="playerName"
-            class="player-input"
-            type="text"
-            maxlength="30"
-            autocomplete="name"
-            placeholder="Nicknév (opcionális)"
-          >
-
-          <button
-            id="spin"
-            class="spin-btn"
-            type="button"
-          >
+          <button id="spin" class="spin-btn" type="button" disabled>
             PÖRGETÉS
           </button>
-
         </div>
 
-
-        <div
-          id="result"
-          class="result"
-          aria-live="polite"
-        >
-          Nyomd meg a pörgetés gombot.
+        <div id="result" class="result" aria-live="polite">
+          Állítsd be a pörgetések számát, majd kattints a Start gombra!
         </div>
 
       </div>
 
     </section>
 
-
-    <!-- =====================================
-         ELŐZMÉNYEK
-    ====================================== -->
-
     <aside class="side-panel">
-
       <section class="log">
-
         <div class="log-header">
-
-          <h2>
-            Elmentett pörgetések
-          </h2>
-
-          <p>
-            A legfrissebb 20 eredmény jelenik meg.
-          </p>
-
+          <h2>Elmentett pörgetések</h2>
+          <p>A legfrissebb 20 eredmény jelenik meg.</p>
         </div>
-
         <div id="entries"></div>
-
       </section>
 
-
       <div class="side-actions">
-
-        <button
-          id="clear"
-          class="secondary-btn"
-          type="button"
-        >
-          Előzmények törlése
-        </button>
-
-        <button
-          id="export"
-          class="secondary-btn"
-          type="button"
-        >
-          Exportálás
-        </button>
-
+        <button id="clear" class="secondary-btn" type="button">Előzmények törlése</button>
+        <button id="export" class="secondary-btn" type="button">Exportálás</button>
       </div>
-
     </aside>
 
   </main>
 
+  <div id="gambleModal" class="modal-overlay">
+    <div class="modal-card">
+      <h3>💀 MINDENT VAGY SEMMIT</h3>
+      <p>
+        Kockára teszed a jelenlegi <strong id="gambleAmount" style="color: #ff72d2;">0 Ft</strong> session nyereményedet? <br>
+        <strong>50% eséllyel megduplázod, 50% eséllyel mindent elveszítesz!</strong>
+      </p>
+      <div class="modal-actions">
+        <button id="btnRisk" class="modal-btn risk">KOCKÁZTATOK!</button>
+        <button id="btnSafe" class="modal-btn safe">MEGTARTOM</button>
+      </div>
+    </div>
+  </div>
 
   <script type="module">
-
-    /* =========================================
-       FIREBASE
-    ========================================= */
-
-    import {
-      initializeApp
-    } from
-      "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-
-    import {
-      getAnalytics
-    } from
-      "https://www.gstatic.com/firebasejs/12.17.1/firebase-analytics.js";
-
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      getDocs,
-      deleteDoc,
-      doc,
-      query,
-      orderBy,
-      limit
-    } from
-      "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-analytics.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
     const firebaseConfig = {
-
-      apiKey:
-        "AIzaSyBtHbu1CywcEVSmx4ZiN1kZraotfGlmIq4",
-
-      authDomain:
-        "szerencsekerek-5f52b.firebaseapp.com",
-
-      projectId:
-        "szerencsekerek-5f52b",
-
-      storageBucket:
-        "szerencsekerek-5f52b.firebasestorage.app",
-
-      messagingSenderId:
-        "679689465068",
-
-      appId:
-        "1:679689465068:web:25ddb5227e60ef38c809c9",
-
-      measurementId:
-        "G-3V9VYSS6HZ"
+      apiKey: "AIzaSyBtHbu1CywcEVSmx4ZiN1kZraotfGlmIq4",
+      authDomain: "szerencsekerek-5f52b.firebaseapp.com",
+      projectId: "szerencsekerek-5f52b",
+      storageBucket: "szerencsekerek-5f52b.firebasestorage.app",
+      messagingSenderId: "679689465068",
+      appId: "1:679689465068:web:25ddb5227e60ef38c809c9",
+      measurementId: "G-3V9VYSS6HZ"
     };
 
-
-    const app =
-      initializeApp(firebaseConfig);
-
+    const app = initializeApp(firebaseConfig);
     getAnalytics(app);
+    const db = getFirestore(app);
+    const entriesCollection = collection(db, "porgetesek");
 
-    const db =
-      getFirestore(app);
-
-    const entriesCollection =
-      collection(db, "porgetesek");
-
-
-    /* =========================================
-       NYEREMÉNYEK
-    ========================================= */
-
+    /* NYEREMÉNYEK ÉS ÚJ SÚLYOZÁS */
     const slices = [
-
-      "500 Ft",
-      "1000 Ft",
-      "2000 Ft",
-      "3000 Ft",
-      "5000 Ft",
-      "7000 Ft",
-      "10000 Ft",
-      "15000 Ft",
-      "20000 Ft"
-
+      "500 Ft",                  // Index 0
+      "1000 Ft",                 // Index 1
+      "2000 Ft",                 // Index 2
+      "3000 Ft",                 // Index 3 -> 0 ESÉLY
+      "5000 Ft",                 // Index 4 -> 0 ESÉLY
+      "🎁 +1 PÖRGETÉS",          // Index 5 -> 20%
+      "🔥 DUPLÁZÁS",             // Index 6 -> 3%
+      "💀 MINDENT VAGY SEMMIT"   // Index 7 -> 7%
     ];
 
-
-    /*
-      Minél nagyobb a szám,
-      annál nagyobb az esély.
-    */
-
-    const weights = [
-
-      60,    // 500 Ft
-      25,    // 1000 Ft
-      10,    // 2000 Ft
-      3,     // 3000 Ft
-      1.5,   // 5000 Ft
-      0.3,   // 7000 Ft
-      0.1,   // 10000 Ft
-      0.05,  // 15000 Ft
-      0.01   // 20000 Ft
-
+    // SÚLYOZÁS: Duplázás 3%, Mindent vagy semmit 7%
+    const baseWeights = [
+      39,   // 500 Ft
+      28,   // 1000 Ft
+      3,    // 2000 Ft
+      0,    // 3000 Ft (0 ESÉLY)
+      0,    // 5000 Ft (0 ESÉLY)
+      20,   // 🎁 +1 PÖRGETÉS
+      3,    // 🔥 DUPLÁZÁS (3% esély)
+      7     // 💀 MINDENT VAGY SEMMIT (7% esély)
     ];
 
+    const colors = ["#ff65ca", "#e900a5", "#ff72d1", "#d9009c", "#ff55c3", "#e500a3", "#ff68cc", "#d8009b"];
 
-    /*
-      A referencia alapján
-      váltakozó pink árnyalatok.
-    */
+    /* GAME STATE */
+    let sessionTotal = 0;
+    let remainingSpins = 0;
 
-    const colors = [
+    /* ELEMENTEK */
+    const wheel = document.getElementById("wheel");
+    const wheelStage = document.getElementById("wheelStage");
+    const entriesEl = document.getElementById("entries");
+    const resultEl = document.getElementById("result");
+    const playerNameEl = document.getElementById("playerName");
+    const customSpinsEl = document.getElementById("customSpins");
+    const setSpinsBtn = document.getElementById("setSpinsBtn");
+    const spinBtn = document.getElementById("spin");
+    const clearBtn = document.getElementById("clear");
+    const exportBtn = document.getElementById("export");
+    const sessionTotalEl = document.getElementById("sessionTotal");
+    const spinCountEl = document.getElementById("spinCount");
 
-      "#ff65ca",
-      "#e900a5",
-      "#ff72d1",
-      "#d9009c",
-      "#ff55c3",
-      "#e500a3",
-      "#ff68cc",
-      "#d8009b",
-      "#ff58c5"
+    const gambleModal = document.getElementById("gambleModal");
+    const gambleAmountEl = document.getElementById("gambleAmount");
+    const btnRisk = document.getElementById("btnRisk");
+    const btnSafe = document.getElementById("btnSafe");
 
-    ];
-
-
-    /* =========================================
-       ELEMENTEK
-    ========================================= */
-
-    const wheel =
-      document.getElementById("wheel");
-
-    const wheelStage =
-      document.getElementById("wheelStage");
-
-    const entriesEl =
-      document.getElementById("entries");
-
-    const resultEl =
-      document.getElementById("result");
-
-    const playerNameEl =
-      document.getElementById("playerName");
-
-    const spinBtn =
-      document.getElementById("spin");
-
-    const clearBtn =
-      document.getElementById("clear");
-
-    const exportBtn =
-      document.getElementById("export");
-
-
-    /* =========================================
-       KERÉK
-    ========================================= */
-
-    const segmentAngle =
-      360 / slices.length;
-
+    const segmentAngle = 360 / slices.length;
     let currentRotation = 0;
-
     let rotating = false;
-
     let audioContext = null;
 
-
     function buildWheel() {
-
-      /*
-        Szeletek
-      */
-
-      const gradientStops =
-        slices.map((_, i) => {
-
-          const start =
-            i * segmentAngle;
-
-          const end =
-            (i + 1) * segmentAngle;
-
-          return `
-            ${colors[i]}
-            ${start}deg
-            ${end}deg
-          `;
-
-        });
-
-
-      wheel.style.background =
-        `conic-gradient(
-          from ${-segmentAngle / 2}deg,
-          ${gradientStops.join(",")}
-        )`;
-
-
-      /*
-        Feliratok
-      */
+      const gradientStops = slices.map((_, i) => `${colors[i]} ${i * segmentAngle}deg ${(i + 1) * segmentAngle}deg`);
+      wheel.style.background = `conic-gradient(from ${-segmentAngle / 2}deg, ${gradientStops.join(",")})`;
 
       slices.forEach((text, index) => {
+        const label = document.createElement("div");
+        label.className = "wheel-label";
+        const labelAngle = index * segmentAngle;
+        label.style.transform = `translate(-50%, -50%) rotate(${labelAngle}deg) translateY(-30%)`;
 
-        const label =
-          document.createElement("div");
-
-        label.className =
-          "wheel-label";
-
-        label.style.zIndex =
-          "20";
-
-        label.style.width =
-          "34%";
-
-        label.style.height =
-          "100%";
-
-        const labelAngle =
-          index * segmentAngle;
-
-        /* A felirat a saját szeletének közepére kerül. */
-        label.style.transform =
-          `
-            translate(-50%, -50%)
-            rotate(${labelAngle}deg)
-            translateY(-30%)
-          `;
-
-        const textRotation =
-          labelAngle > 90 &&
-          labelAngle < 270
-            ? -90
-            : 90;
-
-        const span =
-          document.createElement("span");
-
-        span.textContent =
-          text;
-
-        span.style.color =
-          "#ffffff";
-
-        span.style.fontWeight =
-          "900";
-
-        span.style.fontSize =
-          "clamp(.75rem, 2.1vw, 1rem)";
-
-        span.style.textShadow =
-          "0 1px 3px rgba(0,0,0,.65)";
-
-        span.style.lineHeight =
-          "1.05";
-
-        span.style.transformOrigin =
-          "center";
-
-        span.style.transform =
-          `rotate(${textRotation}deg)`;
+        const textRotation = labelAngle > 90 && labelAngle < 270 ? -90 : 90;
+        const span = document.createElement("span");
+        span.textContent = text;
+        span.style.transform = `rotate(${textRotation}deg)`;
 
         label.appendChild(span);
-
         wheel.appendChild(label);
-
       });
 
-
-      /*
-        Külső kis szegecsek.
-        Ettől lesz olyan a perem,
-        mint a referencia képen.
-      */
-
-      const rivetCount = 14;
-
-
-      for (let i = 0; i < rivetCount; i++) {
-
-        const rivet =
-          document.createElement("div");
-
-        rivet.className =
-          "rivet";
-
-
-        const angle =
-          (360 / rivetCount) * i;
-
-
-        /*
-          48.2% sugár
-        */
-
-        const radius = 48.2;
-
-        const x =
-          50 +
-          Math.sin(angle * Math.PI / 180) *
-          radius;
-
-        const y =
-          50 -
-          Math.cos(angle * Math.PI / 180) *
-          radius;
-
-
-        rivet.style.left =
-          `${x}%`;
-
-        rivet.style.top =
-          `${y}%`;
-
-
-        rivet.style.transform =
-          "translate(-50%, -50%)";
-
-
+      for (let i = 0; i < 14; i++) {
+        const rivet = document.createElement("div");
+        rivet.className = "rivet";
+        const angle = (360 / 14) * i;
+        const x = 50 + Math.sin(angle * Math.PI / 180) * 48.2;
+        const y = 50 - Math.cos(angle * Math.PI / 180) * 48.2;
+        rivet.style.left = `${x}%`;
+        rivet.style.top = `${y}%`;
+        rivet.style.transform = "translate(-50%, -50%)";
         wheelStage.appendChild(rivet);
-
       }
-
+      updateUI();
     }
 
+    function updateUI() {
+      sessionTotalEl.textContent = `${sessionTotal.toLocaleString("hu-HU")} Ft`;
+      spinCountEl.textContent = remainingSpins;
+      spinBtn.disabled = remainingSpins <= 0 || rotating;
+    }
 
-    /* =========================================
-       FIREBASE – ELŐZMÉNYEK
-    ========================================= */
+    setSpinsBtn.addEventListener("click", () => {
+      const count = parseInt(customSpinsEl.value, 10);
+      if (isNaN(count) || count <= 0) {
+        alert("Kérlek érvényes pörgetésszámot adj meg!");
+        return;
+      }
+      remainingSpins = count;
+      sessionTotal = 0;
+      resultEl.innerHTML = `Session elindítva <strong>${remainingSpins}</strong> pörgetéssel!`;
+      updateUI();
+    });
 
     async function getEntries() {
-
       try {
-
-        const q =
-          query(
-            entriesCollection,
-            orderBy("createdAt", "desc"),
-            limit(20)
-          );
-
-
-        const snapshot =
-          await getDocs(q);
-
-
-        return snapshot.docs.map(d => ({
-          id: d.id,
-          ...d.data()
-        }));
-
-      }
-
-      catch (err) {
-
-        console.error(
-          "Firebase lekérdezési hiba:",
-          err
-        );
-
+        const q = query(entriesCollection, orderBy("createdAt", "desc"), limit(20));
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      } catch (err) {
         return null;
-
       }
-
     }
-
 
     async function renderEntries() {
-
       entriesEl.replaceChildren();
-
-
-      const loading =
-        document.createElement("div");
-
-      loading.className =
-        "empty";
-
-      loading.textContent =
-        "Betöltés...";
-
-      entriesEl.appendChild(
-        loading
-      );
-
-
-      const entries =
-        await getEntries();
-
-
-      entriesEl.replaceChildren();
-
-
-      if (entries === null) {
-
-        const error =
-          document.createElement("div");
-
-        error.className =
-          "empty";
-
-        error.textContent =
-          "Hiba történt az előzmények betöltésekor.";
-
-        entriesEl.appendChild(error);
-
+      const entries = await getEntries();
+      if (!entries || !entries.length) {
+        entriesEl.innerHTML = '<div class="empty">Még nincs elmentett pörgetés.</div>';
         return;
-
       }
-
-
-      if (!entries.length) {
-
-        const empty =
-          document.createElement("div");
-
-        empty.className =
-          "empty";
-
-        empty.textContent =
-          "Még nincs elmentett pörgetés.";
-
-        entriesEl.appendChild(empty);
-
-        return;
-
-      }
-
-
       entries.forEach(entry => {
+        const item = document.createElement("div");
+        item.className = "entry";
+        const result = document.createElement("span");
+        result.className = `entry-result ${entry.isSessionEnd ? 'session-end' : ''}`;
+        result.textContent = entry.player ? `${entry.player}: ${entry.result}` : entry.result;
 
-        const item =
-          document.createElement("div");
+        const meta = document.createElement("span");
+        meta.className = "entry-meta";
+        meta.textContent = `${entry.time}${entry.sessionTotal !== undefined ? ` • Egyenleg: ${entry.sessionTotal.toLocaleString("hu-HU")} Ft` : ""}`;
 
-        item.className =
-          "entry";
-
-
-        const result =
-          document.createElement("span");
-
-        result.className =
-          "entry-result";
-
-
-        result.textContent =
-          entry.player
-            ? `${entry.player}: ${entry.result}`
-            : entry.result;
-
-
-        const meta =
-          document.createElement("span");
-
-        meta.className =
-          "entry-meta";
-
-        meta.textContent =
-          entry.time;
-
-
-        item.append(
-          result,
-          meta
-        );
-
-
+        item.append(result, meta);
         entriesEl.appendChild(item);
-
       });
-
     }
-
-
-    /* =========================================
-       HANG
-    ========================================= */
 
     function ensureAudio() {
-
-      if (!audioContext) {
-
-        audioContext =
-          new (
-            window.AudioContext ||
-            window.webkitAudioContext
-          )();
-
-      }
-
-
-      if (
-        audioContext.state ===
-        "suspended"
-      ) {
-
-        audioContext.resume();
-
-      }
-
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioContext.state === "suspended") audioContext.resume();
     }
-
 
     function playTick() {
-
-      if (!audioContext)
-        return;
-
-
-      const now =
-        audioContext.currentTime;
-
-
-      const osc =
-        audioContext.createOscillator();
-
-      const gain =
-        audioContext.createGain();
-
-
-      osc.type =
-        "sine";
-
-
-      osc.frequency.setValueAtTime(
-        210,
-        now
-      );
-
-
-      osc.frequency.exponentialRampToValueAtTime(
-        105,
-        now + .03
-      );
-
-
-      gain.gain.setValueAtTime(
-        .065,
-        now
-      );
-
-
-      gain.gain.exponentialRampToValueAtTime(
-        .0001,
-        now + .05
-      );
-
-
+      if (!audioContext) return;
+      const now = audioContext.currentTime;
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(210, now);
+      osc.frequency.exponentialRampToValueAtTime(105, now + .03);
+      gain.gain.setValueAtTime(.065, now);
+      gain.gain.exponentialRampToValueAtTime(.0001, now + .05);
       osc.connect(gain);
-
-      gain.connect(
-        audioContext.destination
-      );
-
-
+      gain.connect(audioContext.destination);
       osc.start(now);
-
-      osc.stop(
-        now + .05
-      );
-
+      osc.stop(now + .05);
     }
-
 
     function playWinSound() {
-
-      if (!audioContext)
-        return;
-
-
-      const notes = [
-
-        523.25,
-        659.25,
-        783.99,
-        1046.5
-
-      ];
-
-
-      notes.forEach(
-        (frequency, i) => {
-
-          const now =
-            audioContext.currentTime +
-            i * .14;
-
-
-          const osc =
-            audioContext.createOscillator();
-
-          const gain =
-            audioContext.createGain();
-
-
-          osc.type =
-            "triangle";
-
-          osc.frequency.value =
-            frequency;
-
-
-          gain.gain.setValueAtTime(
-            0,
-            now
-          );
-
-
-          gain.gain.linearRampToValueAtTime(
-            .05,
-            now + .02
-          );
-
-
-          gain.gain.exponentialRampToValueAtTime(
-            .0001,
-            now + .7
-          );
-
-
-          osc.connect(gain);
-
-          gain.connect(
-            audioContext.destination
-          );
-
-
-          osc.start(now);
-
-          osc.stop(
-            now + .7
-          );
-
-        }
-      );
-
+      if (!audioContext) return;
+      [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+        const now = audioContext.currentTime + i * .14;
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.type = "triangle";
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(.05, now + .02);
+        gain.gain.exponentialRampToValueAtTime(.0001, now + .7);
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        osc.start(now);
+        osc.stop(now + .7);
+      });
     }
-
-
-    /* =========================================
-       CONFETTI
-    ========================================= */
 
     function launchConfetti() {
-
-      const types = [
-
-        "foil",
-        "star",
-        "sparkle"
-
-      ];
-
-
-      for (
-        let wave = 0;
-        wave < 3;
-        wave++
-      ) {
-
-        setTimeout(() => {
-
-          const particleCount =
-            wave === 0
-              ? 40
-              : 25;
-
-
-          for (
-            let i = 0;
-            i < particleCount;
-            i++
-          ) {
-
-            const particle =
-              document.createElement("div");
-
-
-            const type =
-              types[
-                Math.floor(
-                  Math.random() *
-                  types.length
-                )
-              ];
-
-
-            particle.className =
-              `confetti ${type}`;
-
-
-            const angle =
-              Math.random() *
-              Math.PI *
-              2;
-
-
-            const distance =
-              140 +
-              Math.random() *
-              480;
-
-
-            const x =
-              Math.cos(angle) *
-              distance;
-
-
-            const y =
-              Math.sin(angle) *
-              distance -
-              60;
-
-
-            const size =
-              6 +
-              Math.random() *
-              9;
-
-
-            const duration =
-              1800 +
-              Math.random() *
-              1000;
-
-
-            particle.style.setProperty(
-              "--x",
-              `${x}px`
-            );
-
-
-            particle.style.setProperty(
-              "--y",
-              `${y}px`
-            );
-
-
-            particle.style.setProperty(
-              "--size",
-              `${size}px`
-            );
-
-
-            particle.style.setProperty(
-              "--duration",
-              `${duration}ms`
-            );
-
-
-            document.body.appendChild(
-              particle
-            );
-
-
-            setTimeout(
-              () => particle.remove(),
-              duration + 100
-            );
-
-          }
-
-        }, wave * 220);
-
+      for (let i = 0; i < 35; i++) {
+        const particle = document.createElement("div");
+        particle.className = "confetti foil";
+        particle.style.setProperty("--x", `${(Math.random() - 0.5) * 600}px`);
+        particle.style.setProperty("--y", `${(Math.random() - 0.5) * 600}px`);
+        particle.style.setProperty("--duration", `${1800 + Math.random() * 1000}ms`);
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 2800);
       }
-
     }
 
-
-    /* =========================================
-       SEGÉDFÜGGVÉNYEK
-    ========================================= */
-
-    function easeOutQuint(value) {
-
-      return 1 -
-        Math.pow(
-          1 - value,
-          5
-        );
-
-    }
-
-
-    function normalizeDegrees(value) {
-
-      return (
-        (value % 360) +
-        360
-      ) % 360;
-
-    }
-
-
-    /* =========================================
-       SÚLYOZOTT NYERTES
-    ========================================= */
+    function easeOutQuint(x) { return 1 - Math.pow(1 - x, 5); }
+    function normalizeDegrees(deg) { return ((deg % 360) + 360) % 360; }
 
     function selectWeightedWinner() {
+      const currentWeights = [...baseWeights];
 
-      const totalWeight =
-        weights.reduce(
-          (sum, weight) =>
-            sum + weight,
-          0
-        );
-
-
-      let random =
-        Math.random() *
-        totalWeight;
-
-
-      for (
-        let i = 0;
-        i < weights.length;
-        i++
-      ) {
-
-        random -=
-          weights[i];
-
-
-        if (random <= 0)
-          return i;
-
+      // Ha nincs még session nyeremény (0 Ft), kikapcsoljuk a Duplázást (6) és a Mindent vagy semmit (7) opciókat
+      if (sessionTotal <= 0) {
+        currentWeights[6] = 0; // 🔥 DUPLÁZÁS kikapcsolva
+        currentWeights[7] = 0; // 💀 MINDENT VAGY SEMMIT kikapcsolva
       }
 
+      const totalWeight = currentWeights.reduce((sum, w) => sum + w, 0);
+      let random = Math.random() * totalWeight;
 
-      return slices.length - 1;
-
+      for (let i = 0; i < currentWeights.length; i++) {
+        random -= currentWeights[i];
+        if (random <= 0) return i;
+      }
+      return 0;
     }
 
-
-    /* =========================================
-       MENTÉS
-    ========================================= */
-
-    async function saveResult(result) {
-
-      const player =
-        playerNameEl.value.trim();
-
-
-      try {
-
-        await addDoc(
-          entriesCollection,
-          {
-
-            player,
-
-            result,
-
-            time:
-              new Date()
-                .toLocaleString("hu-HU"),
-
-            createdAt:
-              Date.now()
-
-          }
-        );
-
-
-        await renderEntries();
-
-      }
-
-      catch (err) {
-
-        console.error(
-          "Mentési hiba:",
-          err
-        );
-
-      }
-
+    async function saveResult(resultText) {
+      await addDoc(entriesCollection, {
+        player: playerNameEl.value.trim(),
+        result: resultText,
+        sessionTotal: sessionTotal,
+        time: new Date().toLocaleString("hu-HU"),
+        createdAt: Date.now()
+      });
+      await renderEntries();
     }
 
+    async function saveSessionEndLog() {
+      await addDoc(entriesCollection, {
+        player: playerNameEl.value.trim(),
+        result: `🏆 SESSION NYEREMÉNY: ${sessionTotal.toLocaleString("hu-HU")} Ft`,
+        isSessionEnd: true,
+        time: new Date().toLocaleString("hu-HU"),
+        createdAt: Date.now()
+      });
+      await renderEntries();
+    }
 
-    /* =========================================
-       PÖRGETÉS
-    ========================================= */
+    function checkSessionEnd() {
+      if (remainingSpins <= 0) {
+        setTimeout(() => saveSessionEndLog(), 300);
+      }
+    }
+
+    /* KINYEREMÉNYEZÉS ÉS SPECIÁLIS MEZŐK KEZELÉSE */
+    function processReward(sliceName) {
+      if (sliceName.includes("Ft")) {
+        const val = parseInt(sliceName.replace(/[^0-9]/g, ""), 10);
+        sessionTotal += val;
+        resultEl.innerHTML = `Nyereményed: <strong>+${val.toLocaleString("hu-HU")} Ft</strong>`;
+        updateUI();
+        saveResult(sliceName).then(() => checkSessionEnd());
+
+      } else if (sliceName.includes("+1 PÖRGETÉS")) {
+        remainingSpins += 1;
+        resultEl.innerHTML = `Extrát nyertél: <strong>+1 PÖRGETÉS!</strong>`;
+        updateUI();
+        saveResult(sliceName).then(() => checkSessionEnd());
+
+      } else if (sliceName.includes("DUPLÁZÁS")) {
+        sessionTotal *= 2;
+        resultEl.innerHTML = `Megdupláztad a meglévő nyereményed! <strong>🔥 DUPLÁZÁS!</strong>`;
+        updateUI();
+        saveResult(sliceName).then(() => checkSessionEnd());
+
+      } else if (sliceName.includes("MINDENT VAGY SEMMIT")) {
+        gambleAmountEl.textContent = `${sessionTotal.toLocaleString("hu-HU")} Ft`;
+        gambleModal.classList.add("active");
+        resultEl.innerHTML = `💀 <strong>MINDENT VAGY SEMMIT!</strong> Hozz döntést az ablakban!`;
+        updateUI();
+      }
+    }
+
+    /* MODAL DÖNTÉSEK KEZELÉSE */
+    btnRisk.addEventListener("click", () => {
+      gambleModal.classList.remove("active");
+      const success = Math.random() < 0.5;
+      if (success) {
+        sessionTotal *= 2;
+        resultEl.innerHTML = `🎉 <strong>SIKER!</strong> Megdupláztad a nyereményed!`;
+        saveResult("💀 MINDENT VAGY SEMMIT (Sikeres kockáztatás)").then(() => checkSessionEnd());
+      } else {
+        sessionTotal = 0;
+        resultEl.innerHTML = `😭 <strong>SAJNOS VESZTETTÉL!</strong> Minden nyereményed elveszett.`;
+        saveResult("💀 MINDENT VAGY SEMMIT (Vesztes kockáztatás)").then(() => checkSessionEnd());
+      }
+      updateUI();
+    });
+
+    btnSafe.addEventListener("click", () => {
+      gambleModal.classList.remove("active");
+      resultEl.innerHTML = `🛡️ Megtartottad a nyereményedet!`;
+      saveResult("💀 MINDENT VAGY SEMMIT (Megtartva)").then(() => checkSessionEnd());
+      updateUI();
+    });
 
     function spin() {
-
-      if (rotating)
-        return;
-
-
+      if (rotating || remainingSpins <= 0) return;
       ensureAudio();
-
+      remainingSpins--;
+      updateUI();
 
       rotating = true;
-
       wheelStage.classList.add("spinning");
-
       spinBtn.disabled = true;
 
+      const winnerIndex = selectWeightedWinner();
+      const rounds = 6 + Math.floor(Math.random() * 3);
+      const currentNorm = normalizeDegrees(currentRotation);
+      const desiredNorm = normalizeDegrees(-winnerIndex * segmentAngle);
+      const delta = normalizeDegrees(desiredNorm - currentNorm);
 
-      resultEl.classList.remove(
-        "win-active"
-      );
-
-
-      wheelStage.classList.remove(
-        "winning"
-      );
-
-
-      resultEl.textContent =
-        "Pörög a kerék…";
-
-
-      /*
-        Súlyozott nyertes
-      */
-
-      const winnerIndex =
-        selectWeightedWinner();
-
-
-      /*
-        6-8 teljes kör
-      */
-
-      const rounds =
-        6 +
-        Math.floor(
-          Math.random() * 3
-        );
-
-
-      /*
-        Kerék pontos beállítása
-        a nyertes szelet közepére.
-      */
-
-      const currentNormalized =
-        normalizeDegrees(
-          currentRotation
-        );
-
-
-      const desiredNormalized =
-        normalizeDegrees(
-          -winnerIndex *
-          segmentAngle
-        );
-
-
-      const alignmentDelta =
-        normalizeDegrees(
-          desiredNormalized -
-          currentNormalized
-        );
-
-
-      const startRotation =
-        currentRotation;
-
-
-      const targetRotation =
-        currentRotation +
-        rounds * 360 +
-        alignmentDelta;
-
-
-      const duration =
-        4700 +
-        Math.random() * 700;
-
-
-      const startedAt =
-        performance.now();
-
-
-      let lastTickSegment =
-        null;
-
+      const startRotation = currentRotation;
+      const targetRotation = currentRotation + rounds * 360 + delta;
+      const duration = 4500;
+      const startedAt = performance.now();
+      let lastTickSegment = null;
 
       function animate(now) {
+        const progress = Math.min((now - startedAt) / duration, 1);
+        const rotation = startRotation + (targetRotation - startRotation) * easeOutQuint(progress);
 
-        const progress =
-          Math.min(
-            (now - startedAt) /
-            duration,
-            1
-          );
+        currentRotation = rotation;
+        wheel.style.transform = `translate3d(0, 0, 0) rotate(${rotation}deg)`;
 
-
-        const eased =
-          easeOutQuint(
-            progress
-          );
-
-
-        const rotation =
-          startRotation +
-          (
-            targetRotation -
-            startRotation
-          ) *
-          eased;
-
-
-        currentRotation =
-          rotation;
-
-
-        wheel.style.transform =
-          `translate3d(0, 0, 0) rotate(${rotation}deg)`;
-
-
-        const tickSegment =
-          Math.floor(
-            normalizeDegrees(
-              rotation +
-              segmentAngle / 2
-            ) /
-            segmentAngle
-          );
-
-
-        if (
-          tickSegment !==
-          lastTickSegment
-        ) {
-
+        const tickSegment = Math.floor(normalizeDegrees(rotation + segmentAngle / 2) / segmentAngle);
+        if (tickSegment !== lastTickSegment) {
           playTick();
-
-          lastTickSegment =
-            tickSegment;
-
+          lastTickSegment = tickSegment;
         }
-
 
         if (progress < 1) {
-
-          requestAnimationFrame(
-            animate
-          );
-
+          requestAnimationFrame(animate);
           return;
-
         }
 
-
-        currentRotation =
-          targetRotation;
-
-
-        wheel.style.transform =
-          `translate3d(0, 0, 0) rotate(${currentRotation}deg)`;
-
-
-        const result =
-          slices[winnerIndex];
-
-
-        resultEl.innerHTML =
-          `
-            Az eredmény:
-            <strong>${result}</strong>
-          `;
-
-
-        resultEl.classList.add(
-          "win-active"
-        );
-
-
-        wheelStage.classList.add(
-          "winning"
-        );
-
-
-        saveResult(result);
-
+        currentRotation = targetRotation;
+        processReward(slices[winnerIndex]);
         playWinSound();
-
         launchConfetti();
-
         wheelStage.classList.remove("spinning");
-
         rotating = false;
-
-        spinBtn.disabled = false;
-
+        updateUI();
       }
 
-
-      requestAnimationFrame(
-        animate
-      );
-
+      requestAnimationFrame(animate);
     }
 
-
-    /* =========================================
-       ESEMÉNYEK
-    ========================================= */
-
-    spinBtn.addEventListener(
-      "click",
-      spin
-    );
-
-
-    wheel.addEventListener(
-      "click",
-      spin
-    );
-
-
-    playerNameEl.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key === "Enter"
-        ) {
-
-          spin();
-
-        }
-
-      }
-    );
-
-
-    wheel.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key === "Enter" ||
-          event.key === " "
-        ) {
-
-          event.preventDefault();
-
-          spin();
-
-        }
-
-      }
-    );
-
-
-    /* =========================================
-       TÖRLÉS
-    ========================================= */
-
-    clearBtn.addEventListener(
-      "click",
-      async () => {
-
-        if (
-          !confirm(
-            "Biztosan törlöd az összes pörgetést?"
-          )
-        ) {
-          return;
-        }
-
-
-        clearBtn.disabled =
-          true;
-
-
-        try {
-
-          const snapshot =
-            await getDocs(
-              entriesCollection
-            );
-
-
-          await Promise.all(
-            snapshot.docs.map(
-              d =>
-                deleteDoc(
-                  doc(
-                    db,
-                    "porgetesek",
-                    d.id
-                  )
-                )
-            )
-          );
-
-
-          await renderEntries();
-
-
-          resultEl.classList.remove(
-            "win-active"
-          );
-
-
-          wheelStage.classList.remove(
-            "winning"
-          );
-
-
-          resultEl.textContent =
-            "Az előzmények törölve.";
-
-        }
-
-        catch (err) {
-
-          alert(
-            "Hiba történt a törlés során."
-          );
-
-        }
-
-        finally {
-
-          clearBtn.disabled =
-            false;
-
-        }
-
-      }
-    );
-
-
-    /* =========================================
-       EXPORT
-    ========================================= */
-
-    exportBtn.addEventListener(
-      "click",
-      async () => {
-
-        exportBtn.disabled =
-          true;
-
-
-        const data =
-          await getEntries();
-
-
-        exportBtn.disabled =
-          false;
-
-
-        if (!data)
-          return;
-
-
-        const blob =
-          new Blob(
-            [
-              JSON.stringify(
-                data,
-                null,
-                2
-              )
-            ],
-            {
-              type:
-                "application/json"
-            }
-          );
-
-
-        const url =
-          URL.createObjectURL(
-            blob
-          );
-
-
-        const link =
-          document.createElement("a");
-
-
-        link.href =
-          url;
-
-
-        link.download =
-          "szerencsekerek-porgetesek.json";
-
-
-        link.click();
-
-
-        setTimeout(
-          () =>
-            URL.revokeObjectURL(url),
-          1000
-        );
-
-      }
-    );
-
-
-    /* =========================================
-       INDÍTÁS
-    ========================================= */
-
-    function init() {
-
-      buildWheel();
-
+    spinBtn.addEventListener("click", spin);
+    wheel.addEventListener("click", spin);
+
+    clearBtn.addEventListener("click", async () => {
+      if (!confirm("Biztosan törlöd az előzményeket?")) return;
+      const snapshot = await getDocs(entriesCollection);
+      await Promise.all(snapshot.docs.map(d => deleteDoc(doc(db, "porgetesek", d.id))));
       renderEntries();
+      sessionTotal = 0;
+      remainingSpins = 0;
+      updateUI();
+    });
 
-    }
-
-
-    init();
-
+    buildWheel();
+    renderEntries();
   </script>
-
 </body>
 </html>
