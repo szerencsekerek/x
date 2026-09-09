@@ -551,7 +551,7 @@
       <h3>💀 MINDENT VAGY SEMMIT</h3>
       <p>
         Kockára teszed a jelenlegi <strong id="gambleAmount" style="color: #ff72d2;">0 Ft</strong> session nyereményedet? <br>
-        <strong>50% eséllyel megduplázod, 50% eséllyel mindent elveszítesz!</strong>
+        <strong>40% eséllyel megduplázod, 60% eséllyel mindent elveszítesz!</strong>
       </p>
       <div class="modal-actions">
         <button id="btnRisk" class="modal-btn risk">KOCKÁZTATOK!</button>
@@ -593,14 +593,14 @@
     ];
 
     const baseWeights = [
-      39,   // 500 Ft
-      28,   // 1000 Ft
-      3,    // 2000 Ft
-      0,    // 3000 Ft (0 ESÉLY)
-      0,    // 5000 Ft (0 ESÉLY)
-      20,   // 🎁 +1 PÖRGETÉS
-      3,    // 🔥 DUPLÁZÁS 
-      7     // 💀 MINDENT VAGY SEMMIT 
+      54,   // 500 Ft - Alap eredmény (több mint az esetek fele)
+      10,   // 1000 Ft - Ritka, de jelen van
+      2,    // 2000 Ft - Egyszer-egyszer (2% esély)
+      0,    // 3000 Ft - Esélytelen
+      0,    // 5000 Ft - Esélytelen
+      12,   // 🎁 +1 PÖRGETÉS - Izgalom fenntartása (kb. minden 8. pörgetés)
+      2,    // 🔥 DUPLÁZÁS - Igazán szerencséseknek (50 pörgetésből 1, azaz 2%)
+      20    // 💀 MINDENT VAGY SEMMIT - 5 pörgetésből 1 (20% esély)
     ];
 
     const colors = ["#ff65ca", "#e900a5", "#ff72d1", "#d9009c", "#ff55c3", "#e500a3", "#ff68cc", "#d8009b"];
@@ -848,7 +848,7 @@
     /* MODAL DÖNTÉSEK KEZELÉSE */
     btnRisk.addEventListener("click", () => {
       gambleModal.classList.remove("active");
-      const success = Math.random() < 0.5;
+      const success = Math.random() < 0.4;
       if (success) {
         sessionTotal *= 2;
         resultEl.innerHTML = `🎉 <strong>SIKER!</strong> Megdupláztad a nyereményed!`;
