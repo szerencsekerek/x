@@ -593,14 +593,14 @@
     ];
 
     const baseWeights = [
-      54,   // 500 Ft - Alap eredmény (több mint az esetek fele)
-      10,   // 1000 Ft - Ritka, de jelen van
+      32,   // 500 Ft - Lecsökkentve az 500 Ft esélye (32% esély)
+      5,    // 1000 Ft - Megtartva (5% esély)
       2,    // 2000 Ft - Egyszer-egyszer (2% esély)
-      0,    // 3000 Ft - Esélytelen
-      0,    // 5000 Ft - Esélytelen
-      12,   // 🎁 +1 PÖRGETÉS - Izgalom fenntartása (kb. minden 8. pörgetés)
-      2,    // 🔥 DUPLÁZÁS - Igazán szerencséseknek (50 pörgetésből 1, azaz 2%)
-      20    // 💀 MINDENT VAGY SEMMIT - 5 pörgetésből 1 (20% esély)
+      0,    // 3000 Ft - Esélytelen (0% esély)
+      0,    // 5000 Ft - Esélytelen (0% esély)
+      41,   // 🎁 +1 PÖRGETÉS - Átvette a vezetést, leggyakoribb mező! (41% esély)
+      0,    // 🔥 DUPLÁZÁS - Teljesen nullázva (0% esély)
+      20    // 💀 MINDENT VAGY SEMMIT - (20% esély)
     ];
 
     const colors = ["#ff65ca", "#e900a5", "#ff72d1", "#d9009c", "#ff55c3", "#e500a3", "#ff68cc", "#d8009b"];
