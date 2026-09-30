@@ -459,19 +459,19 @@
     /* MOBIL OPTIMALIZÁLÁS */
     @media (max-width: 950px) {
       .app {
-        grid-template-columns: 1fr; /* Két oszlopból egy lesz */
+        grid-template-columns: 1fr;
       }
       .log {
-        min-height: 200px; /* Ne foglaljon túl nagy helyet mobilon */
+        min-height: 200px;
       }
     }
 
     @media (max-width: 560px) {
       .config-row {
-        grid-template-columns: 1fr; /* Egymás alá kerülnek a beállítások kis képernyőn */
+        grid-template-columns: 1fr;
       }
       .modal-actions {
-        flex-direction: column; /* A felugró ablak gombjai egymás alá kerülnek */
+        flex-direction: column;
       }
     }
   </style>
@@ -533,7 +533,7 @@
       <section class="log">
         <div class="log-header">
           <h2>Elmentett pörgetések</h2>
-          <p>A legfrissebb 20 eredmény.</p>
+          <p>Az összes elmentett eredmény.</p>
         </div>
         <div id="entries"></div>
       </section>
@@ -563,7 +563,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-analytics.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBtHbu1CywcEVSmx4ZiN1kZraotfGlmIq4",
@@ -685,7 +685,7 @@
 
     async function getEntries() {
       try {
-        const q = query(entriesCollection, orderBy("createdAt", "desc"), limit(20));
+        const q = query(entriesCollection, orderBy("createdAt", "desc"));
         const snapshot = await getDocs(q);
         return snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       } catch (err) {
@@ -773,7 +773,6 @@
     function selectWeightedWinner() {
       const currentWeights = [...baseWeights];
 
-      // Ha nincs még session nyeremény (0 Ft), kikapcsoljuk a Duplázást (6) és a Mindent vagy semmit (7) opciókat
       if (sessionTotal <= 0) {
         currentWeights[6] = 0;
         currentWeights[7] = 0;
